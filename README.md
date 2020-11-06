@@ -1,8 +1,8 @@
 # Games Engines 1 Project
-Assignment 1 of Games Engines 1
-Damian Wojtowicz
-C17413722
-DT228/4
+Assignment 1 of Games Engines 1<br>
+Damian Wojtowicz<br>
+C17413722<br>
+DT228/4<br>
 
 ## Project Idea
 The idea is to create an audio responsive procedurally generated tunnel that the camera will move through.<br>
