@@ -16,6 +16,8 @@ public class RingSpawner : MonoBehaviour
         float circumfrence = (2.0f * Mathf.PI * radius * 0.95f);
         int segments = (int) (Mathf.Floor(circumfrence / cubeY));
 
+        //GameObject traingle = CreateTriangle();  
+
         float thetaInc = (Mathf.PI * 2.0f) / (float)segments;
         float theta = Mathf.PI * 2.0f / ((float) segments);
         float z = 0.0f;
@@ -39,6 +41,19 @@ public class RingSpawner : MonoBehaviour
                 
             cube.transform.parent = this.transform;
         }
+    }
+
+    GameObject CreateTriangle() {
+        var gameObject = new GameObject("Triangle");
+        gameObject.AddComponent<MeshFilter>();
+        gameObject.AddComponent<MeshRenderer>();
+        Mesh mesh = GetComponent<MeshFilter>().mesh;
+        mesh.Clear();
+        mesh.vertices = new Vector3[] {new Vector3(0, 0, 0), new Vector3(0, 1, 0), new Vector3(1, 1, 0)};
+        mesh.uv = new Vector2[] {new Vector2(0, 0), new Vector2(0, 1), new Vector2(1, 1)};
+        mesh.triangles = new int[] {0, 1, 2};
+
+        return gameObject; 
     }
 
     GameObject CreateBrick(float x, float y, float z, float xScale = 1.0f, float yScale = 1.0f, float zScale = 1.0f)
