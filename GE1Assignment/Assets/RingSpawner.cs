@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(MeshFilter))]
 public class RingSpawner : MonoBehaviour
 {
     public int radius = 10;
@@ -16,7 +17,7 @@ public class RingSpawner : MonoBehaviour
         float circumfrence = (2.0f * Mathf.PI * radius * 0.95f);
         int segments = (int) (Mathf.Floor(circumfrence / cubeY));
 
-        //GameObject traingle = CreateTriangle();  
+        CreateTriangle(new Vector3(0, 0, 0), new Vector3(0, 5, 0), new Vector3(5, 5, 0));
 
         float thetaInc = (Mathf.PI * 2.0f) / (float)segments;
         float theta = Mathf.PI * 2.0f / ((float) segments);
@@ -43,17 +44,17 @@ public class RingSpawner : MonoBehaviour
         }
     }
 
-    GameObject CreateTriangle() {
-        var gameObject = new GameObject("Triangle");
-        gameObject.AddComponent<MeshFilter>();
-        gameObject.AddComponent<MeshRenderer>();
-        Mesh mesh = GetComponent<MeshFilter>().mesh;
-        mesh.Clear();
-        mesh.vertices = new Vector3[] {new Vector3(0, 0, 0), new Vector3(0, 1, 0), new Vector3(1, 1, 0)};
-        mesh.uv = new Vector2[] {new Vector2(0, 0), new Vector2(0, 1), new Vector2(1, 1)};
-        mesh.triangles = new int[] {0, 1, 2};
+    void CreateTriangle(Vector3 v1, Vector3 v2, Vector3 v3) {
+        GameObject tri = new GameObject();
+        tri.AddComponent<MeshFilter>();
+        tri.AddComponent<MeshRenderer>();
+        Mesh mesh = tri.GetComponent<MeshFilter>().mesh;
 
-        return gameObject; 
+        mesh.Clear();
+
+        mesh.vertices = new Vector3[] {v1, v2, v3};
+        //mesh.uv = new Vector2[] {new Vector2(0, 0), new Vector2(0, 1), new Vector2(1, 1)};
+        mesh.triangles =  new int[] {0, 1, 2};
     }
 
     GameObject CreateBrick(float x, float y, float z, float xScale = 1.0f, float yScale = 1.0f, float zScale = 1.0f)
