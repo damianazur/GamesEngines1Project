@@ -22,16 +22,19 @@ public class RingSpawner : MonoBehaviour
 
             float x = (Mathf.Sin(angle) * radius) + point.x;
             float y = (Mathf.Cos(angle) * radius) + point.y;
-            GameObject brick = CreateBrick(x, y, z, 1, 1, 1);
+
+            GameObject cube = GameObject.Instantiate<GameObject>(prefab);
+                cube.transform.position = new Vector3(x, y, z);
 
             Vector3 target = point;
-            Vector3 relativePos = target - brick.transform.position;
+            Vector3 relativePos = target - cube.transform.position;
             Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.right);
-            brick.transform.rotation = rotation;
+            cube.transform.rotation = rotation;
 
-            brick.GetComponent<Renderer>().material.color =
-                Color.HSVToRGB(Random.Range(0.0f, 1.0f), 1, 1);
-            brick.transform.parent = this.transform;
+            cube.GetComponent<Renderer>().material.color =
+                Color.HSVToRGB(j / (float) segments, 1, 1);
+                
+            cube.transform.parent = this.transform;
         }
     }
 
