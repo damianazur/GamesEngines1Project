@@ -118,34 +118,42 @@ public class RingSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float speed = 50.0f;
+        float speed = 30.0f;
         foreach (List<GameObject> ringSegments in ringList) {
             foreach (GameObject segment in ringSegments) {
                 segment.transform.position -= new Vector3(0, 0, Time.deltaTime * speed);
             }
         }
         moveDistance += Time.deltaTime * speed;
-        //print(moveDistance);
+
+        // If the rings have moved a certain distance then spawn in a new ring
         if (moveDistance > 5) {
             List<GameObject> lastRing = ringList[ringList.Count - 1];
             float zCoord = lastRing[0].transform.position.z;
 
-            // print("zCoord: " + zCoord);
-
-            // Create and synchronize ring
-            List<GameObject> ringSegments = CreateRing();
-            foreach (GameObject segment in ringSegments) {
-                float segX = segment.transform.position.x;
-                float segY = segment.transform.position.y;
-
-                print("xy: " + segX + " "+ segY);
-
-                segment.transform.position = new Vector3(segX, segY, zCoord + 5);
+            // Create and synchronize rings
+            // numOfRings is used to generate multiple rings in the scenario of a lag spike
+            int numOfRings = (int) Mathf.Floor(moveDistance / 5);
+            // There has to be at least one ring but can be more than one at a time
+            if (numOfRings == 0) {
+                numOfRings = 1;
             }
+            // Change the position of segments in the ring
+            for (int i = 0; i < numOfRings; i++) {
+                List<GameObject> ringSegments = CreateRing();
+                foreach (GameObject segment in ringSegments) {
+                    float segX = segment.transform.position.x;
+                    float segY = segment.transform.position.y;
 
-            ringList.Add(ringSegments);
-            ringList.RemoveAt(0);
-            moveDistance -= 5.0f;
+                    // Offset the ring being the last (hence why it's "synchronising" there will be no gaps)
+                    segment.transform.position = new Vector3(segX, segY, zCoord + (5 + i * 5));
+                }
+
+                ringList.Add(ringSegments);
+                ringList[0].RemoveAll (delegate (GameObject o) { return o == null; });
+                ringList.RemoveAt(0);
+                moveDistance -= 5.0f;
+            }
         }
     }
 }
