@@ -118,7 +118,7 @@ public class RingSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float speed = 5.0f;
+        float speed = 50.0f;
         foreach (List<GameObject> ringSegments in ringList) {
             foreach (GameObject segment in ringSegments) {
                 segment.transform.position -= new Vector3(0, 0, Time.deltaTime * speed);
@@ -138,9 +138,9 @@ public class RingSpawner : MonoBehaviour
                 float segX = segment.transform.position.x;
                 float segY = segment.transform.position.y;
 
-                // print("xy: " + segX + " "+ segY);
+                print("xy: " + segX + " "+ segY);
 
-                //segment.transform.position = new Vector3(segX, segY, zCoord - 5);
+                segment.transform.position = new Vector3(segX, segY, zCoord + 5);
             }
 
             ringList.Add(ringSegments);
