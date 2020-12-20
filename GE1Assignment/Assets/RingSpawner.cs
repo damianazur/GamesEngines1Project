@@ -179,7 +179,6 @@ public class RingSpawner : MonoBehaviour
         Vector3 latestRingCenter = new Vector3(transform.position.x, transform.position.y, movableRingsList[movableRingsList.Count -1][0].transform.position.z);
         float movedDistance = Vector3.Distance (latestRingCenter, transform.position);
         print(movedDistance);
-
         // Calculate how far the rings have moved so that more rings can be spawned
         // movedDistance += Time.deltaTime * speed;
 

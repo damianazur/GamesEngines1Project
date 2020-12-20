@@ -6,7 +6,7 @@ using UnityEngine.Audio;
 [RequireComponent(typeof(AudioSource))]
 public class AudioAnalyzer : MonoBehaviour {
 
-    public bool useMic = false;
+    public bool useMic = false; 
     public AudioClip clip;
     AudioSource a;
     public AudioMixerGroup amgMic;
