@@ -6,7 +6,7 @@ using UnityEngine;
 public class RingSpawner : MonoBehaviour
 {
     public int radius = 10;
-    public int startingRings = 200;
+    public int startingRings = 150;
     public List<List<GameObject>> movableRingsList = new List<List<GameObject>>();
     public List<List<GameObject>> endRings = new List<List<GameObject>>();
 
@@ -60,13 +60,14 @@ public class RingSpawner : MonoBehaviour
 
         // Calculate the number of segments needed to fill the radius of the circle
         float cubeY = prefab.transform.localScale.y;
-        float circumfrence = (2.0f * Mathf.PI * radius * 0.95f);
+        float circumfrence = (2.0f * Mathf.PI * radius);
         int segments = (int) (Mathf.Floor(circumfrence / cubeY));
 
         // Get the angle of the segment on the circle (2 pi = 360 degress => 360 / noOfSegments = angle for of each segment)
         float theta = Mathf.PI * 2.0f / ((float) segments);
         // The rings move along the z-axis
         float z = centerPoint.z;
+
         for (int j = 0 ; j < segments ; j ++)
         {
             float angle  = (j * theta);
@@ -75,6 +76,8 @@ public class RingSpawner : MonoBehaviour
 
             GameObject cube = GameObject.Instantiate<GameObject>(prefab);
                 cube.transform.position = new Vector3(x, y, z);
+
+            cube.gameObject.tag = "RingSegment";
 
             Vector3 target = centerPoint;
             Vector3 relativePos = target - cube.transform.position;
@@ -130,10 +133,19 @@ public class RingSpawner : MonoBehaviour
                 }
 
                 movableRingsList.Add(ringSegments);
-                movableRingsList[0].RemoveAll (delegate (GameObject o) { return o == null; });
+                
+                // Destory the objects that are no longer used
+                int destroyIndex = movableRingsList[0].Count - 1;
+                while (destroyIndex > -1) {
+                    Destroy(movableRingsList[0][destroyIndex]);
+                    destroyIndex -= 1;
+                }
+
                 movableRingsList.RemoveAt(0);
                 movedDistance -= (float) positionOffset;
             }
+
+            print(GameObject.FindGameObjectsWithTag("RingSegment").Length);
         }
     }
 }
