@@ -5,8 +5,9 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter))]
 public class RingSpawner : MonoBehaviour
 {
-    public int radius = 10;
-    public int startingRings = 150;
+    public float radius = 10;
+    public int noOfSegments = 20;
+    public int startingRings = 100;
     public List<List<GameObject>> movableRingsList = new List<List<GameObject>>();
     public List<List<GameObject>> endRings = new List<List<GameObject>>();
 
@@ -29,8 +30,8 @@ public class RingSpawner : MonoBehaviour
             List<GameObject> ringSegments = CreateRing();
 
             // Final end rings that don't respawn
-            if (i > startingRings - finalRingCount && i % 6 == 0) {
-                radius = radius - 1;
+            if (i > startingRings - finalRingCount) {
+                radius = radius - (float) 0.1f;
             } 
 
             // Move the spawner forward
@@ -59,16 +60,18 @@ public class RingSpawner : MonoBehaviour
         Vector3 centerPoint = this.transform.position;
 
         // Calculate the number of segments needed to fill the radius of the circle
+        float cubeGap = 1;
         float cubeY = prefab.transform.localScale.y;
-        float circumfrence = (2.0f * Mathf.PI * radius);
-        int segments = (int) (Mathf.Floor(circumfrence / cubeY));
+        float circumfrence = (2.0f * Mathf.PI * (radius - cubeGap));
+        float yScale = (float) (circumfrence / noOfSegments);
+        float sizeScale = yScale / cubeY;
 
         // Get the angle of the segment on the circle (2 pi = 360 degress => 360 / noOfSegments = angle for of each segment)
-        float theta = Mathf.PI * 2.0f / ((float) segments);
+        float theta = Mathf.PI * 2.0f / ((float) noOfSegments);
         // The rings move along the z-axis
         float z = centerPoint.z;
-
-        for (int j = 0 ; j < segments ; j ++)
+        // print("Segments: " + segments);
+        for (int j = 0 ; j < noOfSegments; j ++)
         {
             float angle  = (j * theta);
             float x = (Mathf.Sin(angle) * radius) - centerPoint.x;
@@ -76,6 +79,15 @@ public class RingSpawner : MonoBehaviour
 
             GameObject cube = GameObject.Instantiate<GameObject>(prefab);
                 cube.transform.position = new Vector3(x, y, z);
+
+            float xScale = prefab.transform.localScale.z;
+            if (endRings.Count > 0 && endRings.Count < 50) {
+                xScale = xScale + (endRings.Count * 4);
+            }
+            cube.transform.localScale = new Vector3(
+                xScale,
+                yScale,
+                prefab.transform.localScale.z);
 
             cube.gameObject.tag = "RingSegment";
 
@@ -85,7 +97,7 @@ public class RingSpawner : MonoBehaviour
             cube.transform.rotation = rotation;
 
             cube.GetComponent<Renderer>().material.color =
-                Color.HSVToRGB(j / (float) segments, 1, 1);
+                Color.HSVToRGB(j / (float) noOfSegments, 1, 1);
             
             ringSegments.Add(cube);
         }
@@ -96,7 +108,7 @@ public class RingSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float speed = 30.0f;
+        float speed = 10.0f;
         // Move the segments along the z-axis each frame
         foreach (List<GameObject> ringSegments in movableRingsList) {
             foreach (GameObject segment in ringSegments) {
@@ -145,7 +157,7 @@ public class RingSpawner : MonoBehaviour
                 movedDistance -= (float) positionOffset;
             }
 
-            print(GameObject.FindGameObjectsWithTag("RingSegment").Length);
+            // print(GameObject.FindGameObjectsWithTag("RingSegment").Length);
         }
     }
 }
