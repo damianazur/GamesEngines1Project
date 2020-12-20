@@ -6,8 +6,10 @@ using UnityEngine;
 public class RingSpawner : MonoBehaviour
 {
     public int radius = 10;
-    public int startingRings = 1;
+    public int startingRings = 200;
+    private List<List<GameObject>> ringList = new List<List<GameObject>>();
 
+    private float moveDistance = 0;
     public GameObject prefab;
 
     void Awake() {
@@ -16,15 +18,32 @@ public class RingSpawner : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
+    {   
+        int endPieceCount = 0;
         for (int i = 0; i < startingRings; i++) {
-            print("Pos: " + transform.position);
-            CreateRing();
+            List<GameObject> ringSegments = CreateRing();
+            if (i > startingRings - 50 && i % 6 == 0) {
+                radius = radius - 1;
+            } 
+
             transform.position += new Vector3(0, 0, 5);
+            if (i < startingRings - 50) {
+                ringList.Add(ringSegments);
+            } else {
+                endPieceCount += 1;
+            }
         }
+
+        transform.position -= new Vector3(0, 0, (endPieceCount + 1) * 5);
+        radius = 10;
+
+        // Add final ring so there is no gap
+        CreateRing();
     }
 
-    void CreateRing() {
+    List<GameObject> CreateRing() {
+        List<GameObject> ringSegments = new List<GameObject>();
+
         Vector3 point = this.transform.position;
 
         float cubeY = prefab.transform.localScale.y;
@@ -33,31 +52,32 @@ public class RingSpawner : MonoBehaviour
 
         float thetaInc = (Mathf.PI * 2.0f) / (float)segments;
         float theta = Mathf.PI * 2.0f / ((float) segments);
-        float z = 0.0f;
+        float z = point.z;
         for (int j = 0 ; j < segments ; j ++)
         {
             float angle  = (j * theta);
 
-            float x = (Mathf.Sin(angle) * radius) + point.x;
-            float y = (Mathf.Cos(angle) * radius) + point.y;
+            float x = (Mathf.Sin(angle) * radius) - point.x;
+            float y = (Mathf.Cos(angle) * radius) - point.y;
 
             GameObject cube = GameObject.Instantiate<GameObject>(prefab);
                 cube.transform.position = new Vector3(x, y, z);
 
             //CreateTriangle(new Vector3(0, 0, 0), new Vector3(0, 5, 0), new Vector3(5, 5, 0), cube);
 
-
-            Vector3 target = new Vector3(0, 0, 0);
+            Vector3 target = point;
             Vector3 relativePos = target - cube.transform.position;
             Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.right);
             cube.transform.rotation = rotation;
 
             cube.GetComponent<Renderer>().material.color =
                 Color.HSVToRGB(j / (float) segments, 1, 1);
-                
-            cube.transform.parent = this.transform;
+            
+            ringSegments.Add(cube);
+            //cube.transform.parent = this.transform;
         }
 
+        return ringSegments;
     }
 
     void CreateTriangle(Vector3 v1, Vector3 v2, Vector3 v3, GameObject cube) {
@@ -98,6 +118,34 @@ public class RingSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        float speed = 5.0f;
+        foreach (List<GameObject> ringSegments in ringList) {
+            foreach (GameObject segment in ringSegments) {
+                segment.transform.position -= new Vector3(0, 0, Time.deltaTime * speed);
+            }
+        }
+        moveDistance += Time.deltaTime * speed;
+        //print(moveDistance);
+        if (moveDistance > 5) {
+            List<GameObject> lastRing = ringList[ringList.Count - 1];
+            float zCoord = lastRing[0].transform.position.z;
+
+            // print("zCoord: " + zCoord);
+
+            // Create and synchronize ring
+            List<GameObject> ringSegments = CreateRing();
+            foreach (GameObject segment in ringSegments) {
+                float segX = segment.transform.position.x;
+                float segY = segment.transform.position.y;
+
+                // print("xy: " + segX + " "+ segY);
+
+                //segment.transform.position = new Vector3(segX, segY, zCoord - 5);
+            }
+
+            ringList.Add(ringSegments);
+            ringList.RemoveAt(0);
+            moveDistance -= 5.0f;
+        }
     }
 }
