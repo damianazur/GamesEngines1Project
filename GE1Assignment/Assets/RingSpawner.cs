@@ -120,15 +120,6 @@ public class RingSpawner : MonoBehaviour
         return ringSegments;
     }
 
-    void moveRingsForward(float speed) {
-        // Move the segments along the z-axis each frame
-        foreach (List<GameObject> ringSegments in movableRingsList) {
-            foreach (GameObject segment in ringSegments) {
-                segment.transform.position -= new Vector3(0, 0, Time.deltaTime * speed);
-            }
-        }
-    }
-
     void generateAndSyncNewRing() {
         // Create and synchronize rings
         // numOfRings is used to generate multiple rings in the scenario of a lag spike
@@ -136,8 +127,6 @@ public class RingSpawner : MonoBehaviour
 
         List<GameObject> lastRing = movableRingsList[movableRingsList.Count - 1];
         float zCoord = lastRing[0].transform.position.z;
-
-        print("No of rings: " + numOfRings + " " + movedDistance);
 
         // There has to be at least one ring but can be more than one at a time
         if (numOfRings == 0) {
@@ -166,7 +155,6 @@ public class RingSpawner : MonoBehaviour
             }
 
             movableRingsList.RemoveAt(0);
-            //movedDistance -= (float) positionOffset;
         }
     }
 
@@ -174,15 +162,11 @@ public class RingSpawner : MonoBehaviour
     void Update()
     {
         // radius = Random.Range(3, 10);
-        float speed = 40.0f;
-        moveRingsForward(speed);
+        // float speed = 40.0f;
+        // moveRingsForward(speed);
 
         Vector3 latestRingCenter = new Vector3(transform.position.x, transform.position.y, movableRingsList[movableRingsList.Count-1][0].transform.position.z);
         movedDistance = Vector3.Distance (latestRingCenter, transform.position);
-        //print(movedDistance);
-
-        // Calculate how far the rings have moved so that more rings can be spawned
-        //movedDistance += Time.deltaTime * speed;
 
         // If the rings have moved a certain distance then spawn in a new ring
         if (movedDistance > 5) {
