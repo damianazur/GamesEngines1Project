@@ -28,7 +28,7 @@ public class RingMoverVisualizer : MonoBehaviour {
     void Update () {
         //print(movableRingsList.Count);
 
-        print(AudioAnalyzer.bands.Length);
+        //print(AudioAnalyzer.bands.Length);
         float amplitude = AudioAnalyzer.amplitude;
         float scale = 15.0f;
         foreach (List<GameObject> elements in movableRingsList) {
@@ -46,12 +46,12 @@ public class RingMoverVisualizer : MonoBehaviour {
             }
         }
 
-        GameObject mainCamera = GameObject.FindWithTag("MainCamera");
+        GameObject ringSegmentsHolder = GameObject.FindWithTag("TunnelHolder");
         float thetaInc = Mathf.PI * 2.0f;
         float theta = thetaInc * amplitude;
-        Quaternion toRotation = mainCamera.transform.rotation;
+        Quaternion toRotation = ringSegmentsHolder.transform.rotation;
         toRotation *= Quaternion.Euler(0, 0, 0.1f); // 0.05f as a base roation speed so that it doesn't stop abruptly
-        mainCamera.transform.rotation = Quaternion.Lerp(mainCamera.transform.rotation, toRotation, Time.deltaTime * 200);
+        ringSegmentsHolder.transform.rotation = Quaternion.Lerp(ringSegmentsHolder.transform.rotation, toRotation, Time.deltaTime * 200);
 
         // foreach (List<GameObject> elements in endRings) {
         //     for (int i = 0; i < elements.Count; i++) {
@@ -67,7 +67,7 @@ public class RingMoverVisualizer : MonoBehaviour {
         //     }
         // }
 
-        print(amplitude * scaleMoveSpeed);
+        //print(amplitude * scaleMoveSpeed);
         
         float speed = defaultMoveSpeed + amplitude * scaleMoveSpeed;
         moveRingsForward(speed);

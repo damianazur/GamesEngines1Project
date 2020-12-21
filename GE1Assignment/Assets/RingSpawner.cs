@@ -64,6 +64,10 @@ public class RingSpawner : MonoBehaviour
 
     // Creates a ring in the position of the spawner
     List<GameObject> CreateRing() {
+        GameObject tunnelHolder = GameObject.FindWithTag("TunnelHolder");
+        float tunnelRotZDeg = tunnelHolder.transform.rotation.eulerAngles.z;
+        float tunnelRotZRad = tunnelRotZDeg * Mathf.Deg2Rad;
+
         // The ring is made up of rectangles (segments)
         List<GameObject> ringSegments = new List<GameObject>();
 
@@ -86,12 +90,14 @@ public class RingSpawner : MonoBehaviour
         // print("Segments: " + segments);
         for (int j = 0 ; j < noOfSegments; j ++)
         {
-            float angle  = (j * theta);
+            float angle  = (j * theta) - tunnelRotZRad;
             float x = (Mathf.Sin(angle) * radius) - centerPoint.x;
             float y = (Mathf.Cos(angle) * radius) - centerPoint.y;
 
             GameObject cube = GameObject.Instantiate<GameObject>(prefab);
                 cube.transform.position = new Vector3(x, y, z);
+            
+            cube.transform.parent = tunnelHolder.transform;
 
             // Resize the cube
             float xScale = prefab.transform.localScale.x;
