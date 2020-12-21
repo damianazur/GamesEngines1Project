@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RingMoverVisualizer : MonoBehaviour {
     List<List<GameObject>> movableRingsList;
+    public List<List<GameObject>> endRings;
     public float defaultMoveSpeed = 30;
     public float scaleMoveSpeed = 100;
 
@@ -11,6 +12,7 @@ public class RingMoverVisualizer : MonoBehaviour {
 	void Start () {
         GameObject ringSpawner = GameObject.FindWithTag("RingSpawner");
         movableRingsList = ringSpawner.GetComponent<RingSpawner>().movableRingsList;
+        endRings = ringSpawner.GetComponent<RingSpawner>().endRings;
     }
 
     void moveRingsForward(float speed) {
@@ -26,25 +28,48 @@ public class RingMoverVisualizer : MonoBehaviour {
     void Update () {
         //print(movableRingsList.Count);
 
-        // for (int i = 0; i < elements.Count; i++) {
-        //     Vector3 ls = elements[i].transform.localScale;
-        //     ls.y = Mathf.Lerp(ls.y, 1 + (AudioAnalyzer.bands[i] * scale), Time.deltaTime * 3.0f);
-        //     Vector3 newPos = elements[i].transform.localPosition;
-        //     newPos.y = ls.y/2;
-        //     elements[i].transform.localScale = ls;
-        //     elements[i].transform.localPosition = newPos;
+        print(AudioAnalyzer.bands.Length);
+        float amplitude = AudioAnalyzer.amplitude;
+        float scale = 15.0f;
+        foreach (List<GameObject> elements in movableRingsList) {
+            for (int i = 0; i < elements.Count; i++) {
+                int pos = (int) (i / elements.Count) * AudioAnalyzer.bands.Length;
+
+                Vector3 ls = elements[i].transform.localScale;
+                ls.x = Mathf.Lerp(ls.x, 1 + (AudioAnalyzer.bands[pos] * scale), Time.deltaTime * 5.0f);
+
+                Vector3 newPos = elements[i].transform.localPosition;
+                // newPos.y = ls.y/2;
+                elements[i].transform.localScale = ls;
+                // elements[i].transform.localPosition = newPos;
+
+            }
+        }
+
+        GameObject mainCamera = GameObject.FindWithTag("MainCamera");
+        float thetaInc = Mathf.PI * 2.0f;
+        float theta = thetaInc * amplitude;
+        Quaternion toRotation = mainCamera.transform.rotation;
+        toRotation *= Quaternion.Euler(0, 0, 0.1f); // 0.05f as a base roation speed so that it doesn't stop abruptly
+        mainCamera.transform.rotation = Quaternion.Lerp(mainCamera.transform.rotation, toRotation, Time.deltaTime * 200);
+
+        // foreach (List<GameObject> elements in endRings) {
+        //     for (int i = 0; i < elements.Count; i++) {
+        //         int pos = (int) (i / elements.Count) * AudioAnalyzer.bands.Length;
+
+        //         Vector3 ls = elements[i].transform.localScale;
+        //         ls.z = Mathf.Lerp(ls.z, 1 + (AudioAnalyzer.bands[pos] * scale), Time.deltaTime * 5.0f);
+
+        //         Vector3 newPos = elements[i].transform.localPosition;
+        //         // newPos.y = ls.y/2;
+        //         elements[i].transform.localScale = ls;
+        //         // elements[i].transform.localPosition = newPos;
+        //     }
         // }
 
-        float amplitude = AudioAnalyzer.amplitude;
         print(amplitude * scaleMoveSpeed);
         
         float speed = defaultMoveSpeed + amplitude * scaleMoveSpeed;
         moveRingsForward(speed);
-
-        // float thetaInc = Mathf.PI * 2.0f;
-        // float theta = thetaInc * amplitude;
-        // Quaternion toRotation =  transform.rotation;
-        // toRotation *= Quaternion.Euler(0, 0.05f + amplitude, 0); // 0.05f as a base roation speed so that it doesn't stop abruptly
-        // transform.rotation = Quaternion.Lerp(transform.rotation, toRotation, Time.deltaTime * 200);
 	}
 }
