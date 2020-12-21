@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class RingMoverVisualizer : MonoBehaviour {
     List<List<GameObject>> movableRingsList;
-    public float moveSpeed = 30;
+    public float defaultMoveSpeed = 30;
+    public float scaleMoveSpeed = 100;
+
 	// Use this for initialization
 	void Start () {
         GameObject ringSpawner = GameObject.FindWithTag("RingSpawner");
@@ -23,8 +25,6 @@ public class RingMoverVisualizer : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         //print(movableRingsList.Count);
-        float speed = 40.0f;
-        moveRingsForward(speed);
 
         // for (int i = 0; i < elements.Count; i++) {
         //     Vector3 ls = elements[i].transform.localScale;
@@ -35,7 +35,12 @@ public class RingMoverVisualizer : MonoBehaviour {
         //     elements[i].transform.localPosition = newPos;
         // }
 
-        // float amplitude = AudioAnalyzer.amplitude;
+        float amplitude = AudioAnalyzer.amplitude;
+        print(amplitude * scaleMoveSpeed);
+        
+        float speed = defaultMoveSpeed + amplitude * scaleMoveSpeed;
+        moveRingsForward(speed);
+
         // float thetaInc = Mathf.PI * 2.0f;
         // float theta = thetaInc * amplitude;
         // Quaternion toRotation =  transform.rotation;
