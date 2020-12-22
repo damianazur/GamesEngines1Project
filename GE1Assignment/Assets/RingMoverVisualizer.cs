@@ -36,9 +36,7 @@ public class RingMoverVisualizer : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        //print(movableRingsList.Count);
 
-        //print(AudioAnalyzer.bands.Length);
         float amplitude = AudioAnalyzer.amplitude;
         float scale = 10.0f;
         foreach (List<GameObject> elements in movableRingsList) {
@@ -49,13 +47,9 @@ public class RingMoverVisualizer : MonoBehaviour {
                 ls.z = Mathf.Lerp(ls.z, 1 + (AudioAnalyzer.bands[pos] * scale), Time.deltaTime * 5.0f);
 
                 Vector3 newPos = elements[i].transform.localPosition;
-                // newPos.y = ls.y/2;
                 elements[i].transform.localScale = ls;
-                // elements[i].transform.localPosition = newPos;
-
             }
         }
-
 
         scale = 15.0f;
         foreach (List<GameObject> elements in movableRingsList) {
@@ -66,13 +60,9 @@ public class RingMoverVisualizer : MonoBehaviour {
                 ls.x = Mathf.Lerp(ls.x, 1 + (AudioAnalyzer.bands[pos] * scale), Time.deltaTime * 5.0f);
 
                 Vector3 newPos = elements[i].transform.localPosition;
-                // newPos.y = ls.y/2;
                 elements[i].transform.localScale = ls;
-                // elements[i].transform.localPosition = newPos;
-
             }
         }
-
 
         GameObject ringSegmentsHolder = GameObject.FindWithTag("TunnelHolder");
         float thetaInc = Mathf.PI * 2.0f;
@@ -80,22 +70,6 @@ public class RingMoverVisualizer : MonoBehaviour {
         Quaternion toRotation = ringSegmentsHolder.transform.rotation;
         toRotation *= Quaternion.Euler(0, 0, 0.1f); // 0.05f as a base roation speed so that it doesn't stop abruptly
         ringSegmentsHolder.transform.rotation = Quaternion.Lerp(ringSegmentsHolder.transform.rotation, toRotation, Time.deltaTime * 200);
-
-        // foreach (List<GameObject> elements in endRings) {
-        //     for (int i = 0; i < elements.Count; i++) {
-        //         int pos = (int) (i / elements.Count) * AudioAnalyzer.bands.Length;
-
-        //         Vector3 ls = elements[i].transform.localScale;
-        //         ls.z = Mathf.Lerp(ls.z, 1 + (AudioAnalyzer.bands[pos] * scale), Time.deltaTime * 5.0f);
-
-        //         Vector3 newPos = elements[i].transform.localPosition;
-        //         // newPos.y = ls.y/2;
-        //         elements[i].transform.localScale = ls;
-        //         // elements[i].transform.localPosition = newPos;
-        //     }
-        // }
-
-        //print(amplitude * scaleMoveSpeed);
         
         float speed = defaultMoveSpeed + amplitude * scaleMoveSpeed;
         moveRingsForward(speed);
