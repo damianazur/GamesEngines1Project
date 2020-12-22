@@ -34,35 +34,26 @@ public class RingMoverVisualizer : MonoBehaviour {
         }
     }
 
+    void lerpScaleRingSegments(List<List<GameObject>> segmentList, float scale, float minScale, int axis) {
+        foreach (List<GameObject> elements in segmentList) {
+            for (int i = 0; i < elements.Count; i++) {
+                int pos = (int) (i / elements.Count) * AudioAnalyzer.bands.Length;
+
+                Vector3 ls = elements[i].transform.localScale;
+                ls[axis]= Mathf.Lerp(ls[axis], minScale + (AudioAnalyzer.bands[pos] * scale), Time.deltaTime * 5.0f);
+
+                Vector3 newPos = elements[i].transform.localPosition;
+                elements[i].transform.localScale = ls;
+            }
+        }
+    }
+
     // Update is called once per frame
     void Update () {
 
         float amplitude = AudioAnalyzer.amplitude;
-        float scale = 10.0f;
-        foreach (List<GameObject> elements in movableRingsList) {
-            for (int i = 0; i < elements.Count; i++) {
-                int pos = (int) (i / elements.Count) * AudioAnalyzer.bands.Length;
-
-                Vector3 ls = elements[i].transform.localScale;
-                ls.z = Mathf.Lerp(ls.z, 1 + (AudioAnalyzer.bands[pos] * scale), Time.deltaTime * 5.0f);
-
-                Vector3 newPos = elements[i].transform.localPosition;
-                elements[i].transform.localScale = ls;
-            }
-        }
-
-        scale = 15.0f;
-        foreach (List<GameObject> elements in movableRingsList) {
-            for (int i = 0; i < elements.Count; i++) {
-                int pos = (int) (i / elements.Count) * AudioAnalyzer.bands.Length;
-
-                Vector3 ls = elements[i].transform.localScale;
-                ls.x = Mathf.Lerp(ls.x, 1 + (AudioAnalyzer.bands[pos] * scale), Time.deltaTime * 5.0f);
-
-                Vector3 newPos = elements[i].transform.localPosition;
-                elements[i].transform.localScale = ls;
-            }
-        }
+        lerpScaleRingSegments(movableRingsList, 10.0f, 1, 2);
+        lerpScaleRingSegments(movableRingsList, 15.0f, 1, 0);
 
         GameObject ringSegmentsHolder = GameObject.FindWithTag("TunnelHolder");
         float thetaInc = Mathf.PI * 2.0f;

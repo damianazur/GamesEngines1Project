@@ -8,6 +8,7 @@ public class RingSpawner : MonoBehaviour
     public float radius = 10;
     public int noOfSegments = 20;
     public int startingRings = 100;
+    public int ringSegmentGapMax = 8;
     public int finalRingCount;
     public List<List<GameObject>> movableRingsList = new List<List<GameObject>>();
     public List<List<GameObject>> endRings = new List<List<GameObject>>();
@@ -83,9 +84,9 @@ public class RingSpawner : MonoBehaviour
         if (endRings.Count > 0 && endRings.Count < finalRingCount) {
             segmentGap = 1;
         } else {
-            segmentGap = Random.Range(0, 8);
+            segmentGap = Random.Range(0, ringSegmentGapMax);
         }
-        // float segmentGap = 1;
+        
         float cubeY = prefab.transform.localScale.y;
         float circumfrence = (2.0f * Mathf.PI * (radius - segmentGap));
         float yScale = (float) (circumfrence / noOfSegments);
@@ -110,7 +111,6 @@ public class RingSpawner : MonoBehaviour
 
             // Resize the cube
             float xScale = prefab.transform.localScale.x;
-            // print(xScale);
             if (endRings.Count > 0 && endRings.Count < finalRingCount) {
                 xScale = 1 + (endRings.Count * 4);
             }
