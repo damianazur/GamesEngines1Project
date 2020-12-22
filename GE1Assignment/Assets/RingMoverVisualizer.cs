@@ -29,8 +29,8 @@ public class RingMoverVisualizer : MonoBehaviour {
             }
         }
 
-        foreach (GameObject cube in pulsatingCubesList) {
-            cube.transform.position -= new Vector3(0, 0, Time.deltaTime * speed);
+        foreach (GameObject pulsatingCube in pulsatingCubesList) {
+            pulsatingCube.transform.position -= new Vector3(0, 0, Time.deltaTime * speed);
         }
     }
 

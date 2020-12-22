@@ -16,6 +16,7 @@ public class PulsatingCubeVis : MonoBehaviour
 
     private void spawnCubes() {
         for (int i = 0; i < cubeCount; i++) {
+
             float size = Random.Range(cubeMinSize, cubeMaxSize);
             float x = Random.Range(-5, 5);
             float y = Random.Range(-5, 5);
@@ -32,7 +33,7 @@ public class PulsatingCubeVis : MonoBehaviour
     {
         GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 
-        cube.tag = "cube";
+        cube.tag = "PulsatingCube";
         cube.transform.localScale = new Vector3(sideSize, sideSize, sideSize);
         cube.transform.position = new Vector3(x, y, z);
         // cube.GetComponent<Renderer>().material.color = Utilities.RandomColor();
@@ -45,6 +46,21 @@ public class PulsatingCubeVis : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        int currentCubeCount = pulsatingCubes.Count;
+        for (int i = currentCubeCount - 1; i > 0; i--) {
+            GameObject cube = pulsatingCubes[i];
+            if (cube.transform.position.z < -20) {
+                // Destroy(cube);
+                pulsatingCubes.RemoveAt(i);
+
+                float size = Random.Range(cubeMinSize, cubeMaxSize);
+                float x = Random.Range(-5, 5);
+                float y = Random.Range(-5, 5);
+                float z = Random.Range(0, 1000);
+
+                GameObject newCube = CreateCube(x, y, z, size);
+                pulsatingCubes.Add(newCube);
+            }
+        }
     }
 }
