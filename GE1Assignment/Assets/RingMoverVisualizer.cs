@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RingMoverVisualizer : MonoBehaviour {
     List<List<GameObject>> movableRingsList;
+    List<GameObject> pulsatingCubesList;
     public List<List<GameObject>> endRings;
     public float defaultMoveSpeed = 30;
     public float scaleMoveSpeed = 100;
@@ -13,6 +14,11 @@ public class RingMoverVisualizer : MonoBehaviour {
         GameObject ringSpawner = GameObject.FindWithTag("RingSpawner");
         movableRingsList = ringSpawner.GetComponent<RingSpawner>().movableRingsList;
         endRings = ringSpawner.GetComponent<RingSpawner>().endRings;
+
+        
+        GameObject pulsatingCubesVis = GameObject.FindWithTag("PulsatingCubesHolder");
+        pulsatingCubesList = pulsatingCubesVis.GetComponent<PulsatingCubeVis>().pulsatingCubes;
+        
     }
 
     void moveRingsForward(float speed) {
@@ -21,6 +27,10 @@ public class RingMoverVisualizer : MonoBehaviour {
             foreach (GameObject segment in ringSegments) {
                 segment.transform.position -= new Vector3(0, 0, Time.deltaTime * speed);
             }
+        }
+
+        foreach (GameObject cube in pulsatingCubesList) {
+            cube.transform.position -= new Vector3(0, 0, Time.deltaTime * speed);
         }
     }
 
