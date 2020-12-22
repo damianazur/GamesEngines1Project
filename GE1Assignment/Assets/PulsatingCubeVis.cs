@@ -7,6 +7,7 @@ public class PulsatingCubeVis : MonoBehaviour
     public int cubeCount = 30;
     public float cubeMinSize = 0.1f;
     public float cubeMaxSize = 2.0f;
+
     public List<GameObject> pulsatingCubes = new List<GameObject>();
     // Start is called before the first frame update
     void Start()
@@ -20,10 +21,10 @@ public class PulsatingCubeVis : MonoBehaviour
             float size = Random.Range(cubeMinSize, cubeMaxSize);
             float x = Random.Range(-5, 5);
             float y = Random.Range(-5, 5);
-            while (x < 1 && x > -1) {
+            while (x < 2 && x > -2) {
                 x = Random.Range(-5, 5);
             }
-                while (y < 1 && y > -1) {
+                while (y < 2 && y > -2) {
                 y = Random.Range(-5, 5);
             }
             float z = Random.Range(0, 700);
@@ -85,16 +86,16 @@ public class PulsatingCubeVis : MonoBehaviour
         for (int i = currentCubeCount - 1; i > 0; i--) {
             GameObject cube = pulsatingCubes[i];
             if (cube.transform.position.z < 0) {
-                // Destroy(cube);
+                Destroy(cube);
                 pulsatingCubes.RemoveAt(i);
 
                 float size = Random.Range(cubeMinSize, cubeMaxSize);
                 float x = Random.Range(-5, 5);
                 float y = Random.Range(-5, 5);
-                while (x < 1 && x > -1) {
+                while (x < 2 && x > -2) {
                     x = Random.Range(-5, 5);
                 }
-                 while (y < 1 && y > -1) {
+                 while (y < 2 && y > -2) {
                     y = Random.Range(-5, 5);
                 }
                 float z = 700;

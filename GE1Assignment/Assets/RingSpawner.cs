@@ -176,15 +176,11 @@ public class RingSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // radius = Random.Range(3, 10);
-        // float speed = 40.0f;
-        // moveRingsForward(speed);
-
         Vector3 latestRingCenter = new Vector3(transform.position.x, transform.position.y, movableRingsList[movableRingsList.Count-1][0].transform.position.z);
         movedDistance = Vector3.Distance (latestRingCenter, transform.position);
 
         // If the rings have moved a certain distance then spawn in a new ring
-        if (movedDistance > 5) {
+        if (movedDistance > positionOffset) {
             generateAndSyncNewRing();
         }
     }
