@@ -8,6 +8,7 @@ public class RingSpawner : MonoBehaviour
     public float radius = 10;
     public int noOfSegments = 20;
     public int startingRings = 100;
+    public int finalRingCount;
     public List<List<GameObject>> movableRingsList = new List<List<GameObject>>();
     public List<List<GameObject>> endRings = new List<List<GameObject>>();
 
@@ -31,7 +32,8 @@ public class RingSpawner : MonoBehaviour
 
     void generateInitalRings() {
         // Last x many rings will have their radius gradually reduced
-        int finalRingCount = 50;
+        finalRingCount = (int) (radius * 5);
+        print("finalRingCount: " + finalRingCount);
         
         float savedRadius = radius;
         // Create the initial rings
@@ -40,7 +42,9 @@ public class RingSpawner : MonoBehaviour
 
             // Final end rings that don't respawn
             if (i > startingRings - finalRingCount) {
-                radius = radius - (float) 0.1f;
+                if (radius > 5) {
+                    radius = radius - (float) 0.1f;
+                }
             } 
 
             // Move the spawner forward
@@ -76,10 +80,10 @@ public class RingSpawner : MonoBehaviour
 
         // Calculate the number of segments needed to fill the radius of the circle
         float segmentGap;
-        if (endRings.Count > 0 && endRings.Count < 50) {
+        if (endRings.Count > 0 && endRings.Count < finalRingCount) {
             segmentGap = 1;
         } else {
-            segmentGap = Random.Range(0, 5);
+            segmentGap = Random.Range(0, 10);
         }
         // float segmentGap = 1;
         float cubeY = prefab.transform.localScale.y;
@@ -107,7 +111,7 @@ public class RingSpawner : MonoBehaviour
             // Resize the cube
             float xScale = prefab.transform.localScale.x;
             // print(xScale);
-            if (endRings.Count > 0 && endRings.Count < 50) {
+            if (endRings.Count > 0 && endRings.Count < finalRingCount) {
                 xScale = 1 + (endRings.Count * 4);
             }
             cube.transform.localScale = new Vector3(
