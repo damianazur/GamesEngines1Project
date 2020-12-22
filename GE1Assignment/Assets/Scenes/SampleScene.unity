@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bc7955d7cd112144a91e80b614a2866, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultMoveSpeed: 5
+  defaultMoveSpeed: 8
   scaleMoveSpeed: 150
 --- !u!4 &102618209
 Transform:
@@ -199,7 +199,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useMic: 0
-  clip: {fileID: 8300000, guid: a7abf41644feecf42a0e8c0f460008ec, type: 3}
+  clip: {fileID: 8300000, guid: a2cb5ec5d6fdb3b48a21e79d76bcb8ba, type: 3}
   amgMic: {fileID: 0}
   amgMaster: {fileID: 0}
   selectedDevice: 
@@ -628,6 +628,7 @@ MonoBehaviour:
   radius: 10
   noOfSegments: 20
   startingRings: 150
+  ringSegmentGapMax: 8
   finalRingCount: 0
   prefab: {fileID: 7263426115456198976, guid: 2fbba6a7fe7fff14d85f767eb8b53d64, type: 3}
 --- !u!4 &1492626647
@@ -673,7 +674,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31e7badaa61d5814bae5ca89a96045cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubeCount: 20
+  cubeCount: 50
   cubeMinSize: 0.1
   cubeMaxSize: 1
   pulsatingCubes: []

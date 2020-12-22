@@ -8,6 +8,11 @@ public class RingMoverVisualizer : MonoBehaviour {
     public List<List<GameObject>> endRings;
     public float defaultMoveSpeed = 30;
     public float scaleMoveSpeed = 100;
+    public float ringRotateSpeed = 200;
+
+    public float segmentZScale = 15.0f;
+    public float segmentXScale = 15.0f;
+    public float segmentLerpSpeed = 5.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -34,13 +39,13 @@ public class RingMoverVisualizer : MonoBehaviour {
         }
     }
 
-    void lerpScaleRingSegments(List<List<GameObject>> segmentList, float scale, float minScale, int axis) {
+    void lerpScaleRingSegments(List<List<GameObject>> segmentList, float scale, float minScale, int axis, float lerpSpeed) {
         foreach (List<GameObject> elements in segmentList) {
             for (int i = 0; i < elements.Count; i++) {
                 int pos = (int) (i / elements.Count) * AudioAnalyzer.bands.Length;
 
                 Vector3 ls = elements[i].transform.localScale;
-                ls[axis]= Mathf.Lerp(ls[axis], minScale + (AudioAnalyzer.bands[pos] * scale), Time.deltaTime * 5.0f);
+                ls[axis]= Mathf.Lerp(ls[axis], minScale + (AudioAnalyzer.bands[pos] * scale), Time.deltaTime * lerpSpeed);
 
                 Vector3 newPos = elements[i].transform.localPosition;
                 elements[i].transform.localScale = ls;
@@ -52,15 +57,15 @@ public class RingMoverVisualizer : MonoBehaviour {
     void Update () {
 
         float amplitude = AudioAnalyzer.amplitude;
-        lerpScaleRingSegments(movableRingsList, 10.0f, 1, 2);
-        lerpScaleRingSegments(movableRingsList, 15.0f, 1, 0);
+        lerpScaleRingSegments(movableRingsList, segmentXScale, 1.0f, 0, segmentLerpSpeed);
+        lerpScaleRingSegments(movableRingsList, segmentZScale, 1.0f, 2, segmentLerpSpeed);
 
         GameObject ringSegmentsHolder = GameObject.FindWithTag("TunnelHolder");
         float thetaInc = Mathf.PI * 2.0f;
         float theta = thetaInc * amplitude;
         Quaternion toRotation = ringSegmentsHolder.transform.rotation;
-        toRotation *= Quaternion.Euler(0, 0, 0.1f); // 0.05f as a base roation speed so that it doesn't stop abruptly
-        ringSegmentsHolder.transform.rotation = Quaternion.Lerp(ringSegmentsHolder.transform.rotation, toRotation, Time.deltaTime * 200);
+        toRotation *= Quaternion.Euler(0, 0, 0.1f);
+        ringSegmentsHolder.transform.rotation = Quaternion.Lerp(ringSegmentsHolder.transform.rotation, toRotation, Time.deltaTime * ringRotateSpeed);
         
         float speed = defaultMoveSpeed + amplitude * scaleMoveSpeed;
         moveRingsForward(speed);
