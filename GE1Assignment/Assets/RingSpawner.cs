@@ -75,7 +75,12 @@ public class RingSpawner : MonoBehaviour
         Vector3 centerPoint = this.transform.position;
 
         // Calculate the number of segments needed to fill the radius of the circle
-        float segmentGap = Random.Range(0, 5);
+        float segmentGap;
+        if (endRings.Count > 0 && endRings.Count < 50) {
+            segmentGap = 1;
+        } else {
+            segmentGap = Random.Range(0, 5);
+        }
         // float segmentGap = 1;
         float cubeY = prefab.transform.localScale.y;
         float circumfrence = (2.0f * Mathf.PI * (radius - segmentGap));
