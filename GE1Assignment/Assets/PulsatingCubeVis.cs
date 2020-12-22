@@ -20,7 +20,13 @@ public class PulsatingCubeVis : MonoBehaviour
             float size = Random.Range(cubeMinSize, cubeMaxSize);
             float x = Random.Range(-5, 5);
             float y = Random.Range(-5, 5);
-            float z = Random.Range(0, 300);
+            while (x < 1 && x > -1) {
+                x = Random.Range(-5, 5);
+            }
+                while (y < 1 && y > -1) {
+                y = Random.Range(-5, 5);
+            }
+            float z = Random.Range(0, 700);
 
             GameObject cube = CreateCube(x, y, z, size);
             cube.transform.parent = this.transform;
@@ -38,6 +44,8 @@ public class PulsatingCubeVis : MonoBehaviour
         cube.transform.position = new Vector3(x, y, z);
         // cube.GetComponent<Renderer>().material.color = Utilities.RandomColor();
 
+        cube.transform.rotation = Random.rotation;
+
         return cube;
     }
 
@@ -49,14 +57,20 @@ public class PulsatingCubeVis : MonoBehaviour
         int currentCubeCount = pulsatingCubes.Count;
         for (int i = currentCubeCount - 1; i > 0; i--) {
             GameObject cube = pulsatingCubes[i];
-            if (cube.transform.position.z < -20) {
+            if (cube.transform.position.z < 0) {
                 // Destroy(cube);
                 pulsatingCubes.RemoveAt(i);
 
                 float size = Random.Range(cubeMinSize, cubeMaxSize);
                 float x = Random.Range(-5, 5);
                 float y = Random.Range(-5, 5);
-                float z = Random.Range(0, 1000);
+                while (x < 1 && x > -1) {
+                    x = Random.Range(-5, 5);
+                }
+                 while (y < 1 && y > -1) {
+                    y = Random.Range(-5, 5);
+                }
+                float z = 700;
 
                 GameObject newCube = CreateCube(x, y, z, size);
                 pulsatingCubes.Add(newCube);
