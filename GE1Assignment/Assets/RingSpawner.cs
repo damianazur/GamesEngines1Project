@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(MeshFilter))]
 public class RingSpawner : MonoBehaviour
 {
-    public float radius = 10;
+    public float radius = 11;
     public int noOfSegments = 20;
     public int startingRings = 100;
     public int ringSegmentGapMax = 8;
@@ -86,7 +86,7 @@ public class RingSpawner : MonoBehaviour
         } else {
             segmentGap = Random.Range(0, ringSegmentGapMax);
         }
-        
+
         float cubeY = prefab.transform.localScale.y;
         float circumfrence = (2.0f * Mathf.PI * (radius - segmentGap));
         float yScale = (float) (circumfrence / noOfSegments);

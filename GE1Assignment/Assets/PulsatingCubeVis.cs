@@ -5,13 +5,20 @@ using UnityEngine;
 public class PulsatingCubeVis : MonoBehaviour
 {
     public int cubeCount = 30;
-    public float cubeMinSize = 0.1f;
-    public float cubeMaxSize = 2.0f;
+    public float cubeMinSize = 0.3f;
+    public float cubeMaxSize = 1.0f;
+    public float scaleSpeed = 3.0f;
 
     public List<GameObject> pulsatingCubes = new List<GameObject>();
+
+    private float ringRadius;
+
     // Start is called before the first frame update
     void Start()
     {
+        GameObject ringSpawner = GameObject.FindWithTag("RingSpawner");
+        ringRadius = ringSpawner.GetComponent<RingSpawner>().radius;
+        print("ringRadius " + ringRadius);
         spawnCubes();
     }
 
@@ -19,13 +26,13 @@ public class PulsatingCubeVis : MonoBehaviour
         for (int i = 0; i < cubeCount; i++) {
 
             float size = Random.Range(cubeMinSize, cubeMaxSize);
-            float x = Random.Range(-5, 5);
-            float y = Random.Range(-5, 5);
+            float x = Random.Range(-(ringRadius/2), ringRadius/2);
+            float y = Random.Range(-(ringRadius/2), ringRadius/2);
             while (x < 2 && x > -2) {
-                x = Random.Range(-5, 5);
+                x = Random.Range(-(ringRadius/2), ringRadius/2);
             }
-                while (y < 2 && y > -2) {
-                y = Random.Range(-5, 5);
+            while (y < 2 && y > -2) {
+                y = Random.Range(-(ringRadius/2), ringRadius/2);
             }
             float z = Random.Range(0, 700);
 
@@ -52,7 +59,7 @@ public class PulsatingCubeVis : MonoBehaviour
         cube.transform.localScale = new Vector3(sideSize, sideSize, sideSize);
         cube.transform.position = new Vector3(x, y, z);
 
-        float hue = Map((x + y), -10, 10, 0, 1);
+        float hue = Map((x + y), -ringRadius, ringRadius, 0, 1);
 
         cube.GetComponent<Renderer>().material.color =
             Color.HSVToRGB(hue, 1, 1);
@@ -64,12 +71,12 @@ public class PulsatingCubeVis : MonoBehaviour
 
     void pulseCubes() {
         float amplitude = AudioAnalyzer.amplitude;
-        float scale = 1.0f;
+        float scale = cubeMaxSize;
         for (int i = 0; i < pulsatingCubes.Count; i++) {
             Vector3 ls = pulsatingCubes[i].transform.localScale;
-            ls.x = Mathf.Lerp(ls.x, 0.3f + (amplitude * scale), Time.deltaTime * 3.0f);
-            ls.y = Mathf.Lerp(ls.y, 0.3f + (amplitude * scale), Time.deltaTime * 3.0f);
-            ls.z = Mathf.Lerp(ls.z, 0.3f + (amplitude * scale), Time.deltaTime * 3.0f);
+            ls.x = Mathf.Lerp(ls.x, cubeMinSize + (amplitude * scale), Time.deltaTime * scaleSpeed);
+            ls.y = Mathf.Lerp(ls.y, cubeMinSize + (amplitude * scale), Time.deltaTime * scaleSpeed);
+            ls.z = Mathf.Lerp(ls.z, cubeMinSize + (amplitude * scale), Time.deltaTime * scaleSpeed);
 
             Vector3 newPos = pulsatingCubes[i].transform.localPosition;
             pulsatingCubes[i].transform.localScale = ls;

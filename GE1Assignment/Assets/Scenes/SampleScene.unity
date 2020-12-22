@@ -152,8 +152,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bc7955d7cd112144a91e80b614a2866, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultMoveSpeed: 8
-  scaleMoveSpeed: 150
+  defaultMoveSpeed: 5
+  scaleMoveSpeed: 100
+  ringRotateSpeed: 200
+  segmentZScale: 10
+  segmentXScale: 15
+  segmentLerpSpeed: 5
 --- !u!4 &102618209
 Transform:
   m_ObjectHideFlags: 0
@@ -199,7 +203,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   useMic: 0
-  clip: {fileID: 8300000, guid: a2cb5ec5d6fdb3b48a21e79d76bcb8ba, type: 3}
+  clip: {fileID: 8300000, guid: a7abf41644feecf42a0e8c0f460008ec, type: 3}
   amgMic: {fileID: 0}
   amgMaster: {fileID: 0}
   selectedDevice: 
@@ -541,7 +545,7 @@ Camera:
   m_FOVAxisMode: 0
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 50
+  m_FocalLength: 44.015488
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -550,7 +554,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 26.991467
+  field of view: 30.500002
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -595,7 +599,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
-  speed: 50
+  speed: 5
 --- !u!1 &1492626645
 GameObject:
   m_ObjectHideFlags: 0
@@ -675,8 +679,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cubeCount: 50
-  cubeMinSize: 0.1
-  cubeMaxSize: 1
+  cubeMinSize: 0.3
+  cubeMaxSize: 1.5
+  scaleSpeed: 5
   pulsatingCubes: []
 --- !u!4 &1966477119
 Transform:
