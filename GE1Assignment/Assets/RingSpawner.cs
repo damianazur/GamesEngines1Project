@@ -33,29 +33,29 @@ public class RingSpawner : MonoBehaviour
 
     void generateInitalRings() {
         // Last x many rings will have their radius gradually reduced
-        finalRingCount = (int) (radius * 5);
-        print("finalRingCount: " + finalRingCount);
-        
+        // This value needs to be restored
         float savedRadius = radius;
+
         // Create the initial rings
         for (int i = 0; i < startingRings; i++) {
             List<GameObject> ringSegments = CreateRing();
 
-            // Final end rings that don't respawn
-            if (i > startingRings - finalRingCount) {
-                if (radius > 5) {
-                    radius = radius - (float) 0.1f;
-                }
-            } 
+            // Move the spawner forward
+            transform.position += new Vector3(0, 0, positionOffset);
+            movableRingsList.Add(ringSegments);
+        }
+
+        // Create the end rings
+        for (int i = 0; i < finalRingCount; i++) {
+            List<GameObject> ringSegments = CreateRing();
+
+            if (radius > 5) {
+                radius = radius - (float) 0.1f;
+            }
 
             // Move the spawner forward
             transform.position += new Vector3(0, 0, positionOffset);
-            // If not final rings
-            if (i < startingRings - finalRingCount) {
-                movableRingsList.Add(ringSegments);
-            } else {
-                endRings.Add(ringSegments);
-            }
+            endRings.Add(ringSegments);
         }
 
         int endPieceCount = endRings.Count;
