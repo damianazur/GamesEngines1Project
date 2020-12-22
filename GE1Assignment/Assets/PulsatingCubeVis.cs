@@ -42,7 +42,11 @@ public class PulsatingCubeVis : MonoBehaviour
         cube.tag = "PulsatingCube";
         cube.transform.localScale = new Vector3(sideSize, sideSize, sideSize);
         cube.transform.position = new Vector3(x, y, z);
-        // cube.GetComponent<Renderer>().material.color = Utilities.RandomColor();
+
+        float hue = Random.Range(0f, 1f);
+
+        cube.GetComponent<Renderer>().material.color =
+            Color.HSVToRGB(hue, 1, 1);
 
         cube.transform.rotation = Random.rotation;
 
