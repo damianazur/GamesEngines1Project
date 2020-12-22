@@ -30,7 +30,24 @@ public class RingMoverVisualizer : MonoBehaviour {
 
         //print(AudioAnalyzer.bands.Length);
         float amplitude = AudioAnalyzer.amplitude;
-        float scale = 15.0f;
+        float scale = 10.0f;
+        foreach (List<GameObject> elements in movableRingsList) {
+            for (int i = 0; i < elements.Count; i++) {
+                int pos = (int) (i / elements.Count) * AudioAnalyzer.bands.Length;
+
+                Vector3 ls = elements[i].transform.localScale;
+                ls.z = Mathf.Lerp(ls.z, 1 + (AudioAnalyzer.bands[pos] * scale), Time.deltaTime * 5.0f);
+
+                Vector3 newPos = elements[i].transform.localPosition;
+                // newPos.y = ls.y/2;
+                elements[i].transform.localScale = ls;
+                // elements[i].transform.localPosition = newPos;
+
+            }
+        }
+
+
+        scale = 15.0f;
         foreach (List<GameObject> elements in movableRingsList) {
             for (int i = 0; i < elements.Count; i++) {
                 int pos = (int) (i / elements.Count) * AudioAnalyzer.bands.Length;
@@ -45,6 +62,7 @@ public class RingMoverVisualizer : MonoBehaviour {
 
             }
         }
+
 
         GameObject ringSegmentsHolder = GameObject.FindWithTag("TunnelHolder");
         float thetaInc = Mathf.PI * 2.0f;

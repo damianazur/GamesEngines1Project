@@ -83,7 +83,7 @@ public class RingSpawner : MonoBehaviour
         if (endRings.Count > 0 && endRings.Count < finalRingCount) {
             segmentGap = 1;
         } else {
-            segmentGap = Random.Range(0, 10);
+            segmentGap = Random.Range(0, 8);
         }
         // float segmentGap = 1;
         float cubeY = prefab.transform.localScale.y;
