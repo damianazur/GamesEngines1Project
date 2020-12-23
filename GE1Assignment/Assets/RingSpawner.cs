@@ -70,6 +70,10 @@ public class RingSpawner : MonoBehaviour
 
     // Creates a ring in the position of the spawner
     List<GameObject> CreateRing() {
+        GameObject ringHolder = new GameObject();
+        ringHolder.name = "RingHolder";
+        ringHolder.tag = "RingHolder";
+
         GameObject tunnelHolder = GameObject.FindWithTag("TunnelHolder");
         float tunnelRotZDeg = tunnelHolder.transform.rotation.eulerAngles.z;
         float tunnelRotZRad = tunnelRotZDeg * Mathf.Deg2Rad;
@@ -108,7 +112,8 @@ public class RingSpawner : MonoBehaviour
             GameObject cube = GameObject.Instantiate<GameObject>(prefab);
                 cube.transform.position = new Vector3(x, y, z);
             
-            cube.transform.parent = tunnelHolder.transform;
+            cube.transform.parent = ringHolder.transform;
+            ringHolder.transform.parent = tunnelHolder.transform;
 
             // Resize the cube
             float xScale = prefab.transform.localScale.x;
@@ -165,10 +170,11 @@ public class RingSpawner : MonoBehaviour
             
             // Destory the objects that are no longer used
             int destroyIndex = movableRingsList[0].Count - 1;
-            while (destroyIndex > -1) {
-                Destroy(movableRingsList[0][destroyIndex]);
-                destroyIndex -= 1;
-            }
+            Destroy(movableRingsList[0][destroyIndex].transform.parent.gameObject);
+            // while (destroyIndex > -1) {
+            //     Destroy(movableRingsList[0][destroyIndex]);
+            //     destroyIndex -= 1;
+            // }
 
             movableRingsList.RemoveAt(0);
         }

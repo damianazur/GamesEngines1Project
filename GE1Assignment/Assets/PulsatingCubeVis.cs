@@ -130,6 +130,7 @@ public class PulsatingCubeVis : MonoBehaviour
 
                 GameObject newCube = CreateCube(x, y, z, size);
                 pulsatingCubes.Add(newCube);
+                newCube.transform.parent = this.transform;
             }
         }
     }
