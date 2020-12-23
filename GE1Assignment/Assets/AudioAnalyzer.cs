@@ -6,7 +6,6 @@ using UnityEngine.Audio;
 [RequireComponent(typeof(AudioSource))]
 public class AudioAnalyzer : MonoBehaviour {
 
-    public bool useMic = false; 
     public AudioClip clip;
     AudioSource a;
     public AudioMixerGroup amgMic;
@@ -43,22 +42,8 @@ public class AudioAnalyzer : MonoBehaviour {
         wave = new float[frameSize];
         bands = new float[(int) Mathf.Log(frameSize, 2)];
         
-        if (useMic)
-        {
-            Debug.Log("Microphone is used");
-            if (Microphone.devices.Length > 0)
-            {
-                selectedDevice = Microphone.devices[0].ToString();
-                a.clip = Microphone.Start(selectedDevice, true, 1, AudioSettings.outputSampleRate);
-                a.loop = true;
-                a.outputAudioMixerGroup = amgMic;
-            }
-        }
-        else
-        {
-            a.clip = clip;
-            a.outputAudioMixerGroup = amgMaster;
-        }
+        a.clip = clip;
+        a.outputAudioMixerGroup = amgMaster;
         a.Play();
     }
 
@@ -82,7 +67,6 @@ public class AudioAnalyzer : MonoBehaviour {
             }
             average /= (float) width;
             bands[i] = average;
-            // Debug.Log(i + "\t" + start + "\t" + end + "\t" + start * binWidth + "\t" + (end * binWidth));
         }
     }
 
@@ -94,13 +78,11 @@ public class AudioAnalyzer : MonoBehaviour {
         // By lerping to it
         float sum = 0;
         for (int i = 0; i < wave.Length; i++) {
-            // print(wave[i]);
             sum = sum + Mathf.Abs(wave[i]);
         }
 
         float avg = sum / (float) wave.Length;
         amplitude = avg;
-        // print(avg);
     }
     
     

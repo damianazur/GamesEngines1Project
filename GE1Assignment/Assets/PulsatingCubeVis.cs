@@ -9,6 +9,9 @@ public class PulsatingCubeVis : MonoBehaviour
     public float cubeMaxSize = 1.0f;
     public float scaleSpeed = 3.0f;
 
+    // Cubes will not spawn within a certain range of the camera
+    public float awayFromCenterZone = 2.0f;
+    
     public List<GameObject> pulsatingCubes = new List<GameObject>();
 
     private float endOfTunnelZ;
@@ -19,33 +22,24 @@ public class PulsatingCubeVis : MonoBehaviour
     {
         GameObject ringSpawner = GameObject.FindWithTag("RingSpawner");
         ringRadius = ringSpawner.GetComponent<RingSpawner>().radius;
-        // List<List<GameObject>> endRings = ringSpawner.GetComponent<RingSpawner>().endRings;
-        // endOfTunnelZ = endRings[endRings.Count - 1][0].transform.position.z;
+        List<List<GameObject>> endRings = ringSpawner.GetComponent<RingSpawner>().endRings;
+        endOfTunnelZ = endRings[endRings.Count - 1][0].transform.position.z;
 
-        print(endOfTunnelZ);
+        print("End of Tunnel Z-Axis: " + endOfTunnelZ);
 
         spawnInitialCubes();
     }
 
     // This method spawns in the inital cubes within the tunnel
     private void spawnInitialCubes() {
-        // The cubes are spawned within half the radius of the tunnel
-        float halfRadius = ringRadius/2;
         // Away from center means that the cubes will spawn slightly away from the center as to not get in the way of the camera
-        float awayFromCenter = 2;
         for (int i = 0; i < cubeCount; i++) {
             float size = Random.Range(cubeMinSize, cubeMaxSize);
-            float x = Random.Range(-halfRadius, halfRadius);
-            float y = Random.Range(-halfRadius, halfRadius);
+            
+            float x = genRandomCoord(ringRadius/2, awayFromCenterZone);
+            float y = genRandomCoord(ringRadius/2, awayFromCenterZone);
 
-            // The loops will run as long as the cube's position is too close to the center
-            while (x < awayFromCenter && x > -awayFromCenter) {
-                x = Random.Range(-halfRadius, halfRadius);
-            }
-            while (y < awayFromCenter && y > -awayFromCenter) {
-                y = Random.Range(-halfRadius, halfRadius);
-            }
-            float z = Random.Range(0, 700);
+            float z = Random.Range(0, endOfTunnelZ);
 
             // Cubes position is set
             GameObject cube = CreateCube(x, y, z, size);
@@ -57,6 +51,18 @@ public class PulsatingCubeVis : MonoBehaviour
         }
     }
 
+    public float genRandomCoord(float radius, float noSpawnZone) {
+        float coord = Random.Range(-radius, radius);
+
+        // The loops will run as long as the cube's position is too close to the center
+        while (coord < noSpawnZone && coord > -noSpawnZone) {
+            coord = Random.Range(-radius, radius);
+        }
+
+        return coord;
+    }
+
+    // Creates the pulsating cube
     GameObject CreateCube(float x, float y, float z, float sideSize)
     {
         GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -65,16 +71,18 @@ public class PulsatingCubeVis : MonoBehaviour
         cube.transform.localScale = new Vector3(sideSize, sideSize, sideSize);
         cube.transform.position = new Vector3(x, y, z);
 
+        // Hue is determined by the position of the cube (this makes the visualizer less messy looking)
         float hue = Utilities.Map((x + y), -ringRadius, ringRadius, 0, 1);
 
         cube.GetComponent<Renderer>().material.color =
             Color.HSVToRGB(hue, 1, 1);
-
+        // A random rotation is applied to add variation
         cube.transform.rotation = Random.rotation;
 
         return cube;
     }
 
+    // The cubes are scaled over time to the amplitude of the music
     void pulseCubes() {
         float amplitude = AudioAnalyzer.amplitude;
         float scale = cubeMaxSize;
@@ -97,22 +105,28 @@ public class PulsatingCubeVis : MonoBehaviour
 
         float halfRadius = ringRadius/2;
         int currentCubeCount = pulsatingCubes.Count;
+
+        // Iterate over cubes and destroy the ones that are no longer within the player's FOV
+        // Spawn new cubes to replace the old ones
         for (int i = currentCubeCount - 1; i > 0; i--) {
             GameObject cube = pulsatingCubes[i];
+            // If cube is behind player
             if (cube.transform.position.z < 0) {
+                // Destroy the object and free up the memory 
                 Destroy(cube);
+                // Remove from the array
                 pulsatingCubes.RemoveAt(i);
 
                 float size = Random.Range(cubeMinSize, cubeMaxSize);
                 float x = Random.Range(-halfRadius, halfRadius);
                 float y = Random.Range(-halfRadius, halfRadius);
-                while (x < 2 && x > -2) {
+                while (x < awayFromCenterZone && x > -awayFromCenterZone) {
                     x = Random.Range(-halfRadius, halfRadius);
                 }
-                 while (y < 2 && y > -2) {
+                 while (y < awayFromCenterZone && y > -awayFromCenterZone) {
                     y = Random.Range(-halfRadius, halfRadius);
                 }
-                float z = 700;
+                float z = endOfTunnelZ;
 
                 GameObject newCube = CreateCube(x, y, z, size);
                 pulsatingCubes.Add(newCube);
