@@ -24,17 +24,21 @@ public class PulsatingCubeVis : MonoBehaviour
 
         print(endOfTunnelZ);
 
-        spawnCubes();
+        spawnInitialCubes();
     }
 
-    private void spawnCubes() {
+    // This method spawns in the inital cubes within the tunnel
+    private void spawnInitialCubes() {
+        // The cubes are spawned within half the radius of the tunnel
         float halfRadius = ringRadius/2;
+        // Away from center means that the cubes will spawn slightly away from the center as to not get in the way of the camera
         float awayFromCenter = 2;
         for (int i = 0; i < cubeCount; i++) {
-
             float size = Random.Range(cubeMinSize, cubeMaxSize);
             float x = Random.Range(-halfRadius, halfRadius);
             float y = Random.Range(-halfRadius, halfRadius);
+
+            // The loops will run as long as the cube's position is too close to the center
             while (x < awayFromCenter && x > -awayFromCenter) {
                 x = Random.Range(-halfRadius, halfRadius);
             }
@@ -43,9 +47,12 @@ public class PulsatingCubeVis : MonoBehaviour
             }
             float z = Random.Range(0, 700);
 
+            // Cubes position is set
             GameObject cube = CreateCube(x, y, z, size);
+            // The hierarchy of the objects is set and the cubes are stored under the object of this script
             cube.transform.parent = this.transform;
 
+            // Cubes added to array to keep track of them for purposes such as moving, despawning etc.
             pulsatingCubes.Add(cube);
         }
     }
