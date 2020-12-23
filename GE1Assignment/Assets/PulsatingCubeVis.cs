@@ -11,6 +11,7 @@ public class PulsatingCubeVis : MonoBehaviour
 
     public List<GameObject> pulsatingCubes = new List<GameObject>();
 
+    private float endOfTunnelZ;
     private float ringRadius;
 
     // Start is called before the first frame update
@@ -18,21 +19,27 @@ public class PulsatingCubeVis : MonoBehaviour
     {
         GameObject ringSpawner = GameObject.FindWithTag("RingSpawner");
         ringRadius = ringSpawner.GetComponent<RingSpawner>().radius;
-        print("ringRadius " + ringRadius);
+        // List<List<GameObject>> endRings = ringSpawner.GetComponent<RingSpawner>().endRings;
+        // endOfTunnelZ = endRings[endRings.Count - 1][0].transform.position.z;
+
+        print(endOfTunnelZ);
+
         spawnCubes();
     }
 
     private void spawnCubes() {
+        float halfRadius = ringRadius/2;
+        float awayFromCenter = 2;
         for (int i = 0; i < cubeCount; i++) {
 
             float size = Random.Range(cubeMinSize, cubeMaxSize);
-            float x = Random.Range(-(ringRadius/2), ringRadius/2);
-            float y = Random.Range(-(ringRadius/2), ringRadius/2);
-            while (x < 2 && x > -2) {
-                x = Random.Range(-(ringRadius/2), ringRadius/2);
+            float x = Random.Range(-halfRadius, halfRadius);
+            float y = Random.Range(-halfRadius, halfRadius);
+            while (x < awayFromCenter && x > -awayFromCenter) {
+                x = Random.Range(-halfRadius, halfRadius);
             }
-            while (y < 2 && y > -2) {
-                y = Random.Range(-(ringRadius/2), ringRadius/2);
+            while (y < awayFromCenter && y > -awayFromCenter) {
+                y = Random.Range(-halfRadius, halfRadius);
             }
             float z = Random.Range(0, 700);
 
@@ -89,6 +96,7 @@ public class PulsatingCubeVis : MonoBehaviour
     {
         pulseCubes();
 
+        float halfRadius = ringRadius/2;
         int currentCubeCount = pulsatingCubes.Count;
         for (int i = currentCubeCount - 1; i > 0; i--) {
             GameObject cube = pulsatingCubes[i];
@@ -97,13 +105,13 @@ public class PulsatingCubeVis : MonoBehaviour
                 pulsatingCubes.RemoveAt(i);
 
                 float size = Random.Range(cubeMinSize, cubeMaxSize);
-                float x = Random.Range(-5, 5);
-                float y = Random.Range(-5, 5);
+                float x = Random.Range(-halfRadius, halfRadius);
+                float y = Random.Range(-halfRadius, halfRadius);
                 while (x < 2 && x > -2) {
-                    x = Random.Range(-5, 5);
+                    x = Random.Range(-halfRadius, halfRadius);
                 }
                  while (y < 2 && y > -2) {
-                    y = Random.Range(-5, 5);
+                    y = Random.Range(-halfRadius, halfRadius);
                 }
                 float z = 700;
 
