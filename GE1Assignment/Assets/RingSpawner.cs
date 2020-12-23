@@ -22,7 +22,7 @@ public class RingSpawner : MonoBehaviour
     void Awake() {
         // Distance between each ring is the width of the ring * 2 + 1 (gap)
         positionOffset = (int) prefab.transform.localScale.z * 2 + 1;
-        print("POS OFFSET" + positionOffset);
+        print("POS OFFSET: " + positionOffset);
     }
 
     // Start is called before the first frame update

@@ -53,20 +53,23 @@ public class RingMoverVisualizer : MonoBehaviour {
         }
     }
 
-    // Update is called once per frame
-    void Update () {
-
+    void rotateTunnel() {
         float amplitude = AudioAnalyzer.amplitude;
-        lerpScaleRingSegments(movableRingsList, segmentXScale, 1.0f, 0, segmentLerpSpeed);
-        lerpScaleRingSegments(movableRingsList, segmentZScale, 1.0f, 2, segmentLerpSpeed);
-
         GameObject ringSegmentsHolder = GameObject.FindWithTag("TunnelHolder");
         float thetaInc = Mathf.PI * 2.0f;
         float theta = thetaInc * amplitude;
         Quaternion toRotation = ringSegmentsHolder.transform.rotation;
         toRotation *= Quaternion.Euler(0, 0, 0.1f);
         ringSegmentsHolder.transform.rotation = Quaternion.Lerp(ringSegmentsHolder.transform.rotation, toRotation, Time.deltaTime * ringRotateSpeed);
-        
+    }
+
+    // Update is called once per frame
+    void Update () {
+
+        float amplitude = AudioAnalyzer.amplitude;
+        lerpScaleRingSegments(movableRingsList, segmentXScale, 1.0f, 0, segmentLerpSpeed);
+        lerpScaleRingSegments(movableRingsList, segmentZScale, 1.0f, 2, segmentLerpSpeed);
+        rotateTunnel();
         float speed = defaultMoveSpeed + amplitude * scaleMoveSpeed;
         moveRingsForward(speed);
 	}
