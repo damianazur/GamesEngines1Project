@@ -83,6 +83,7 @@ public class RingSpawner : MonoBehaviour
 
         // Center point of the circle (segments will rotate towards it)
         Vector3 centerPoint = this.transform.position;
+        ringHolder.transform.position = centerPoint;
 
         // Calculate the number of segments needed to fill the radius of the circle
         float segmentGap;

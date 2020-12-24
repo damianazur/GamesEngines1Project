@@ -29,9 +29,9 @@ public class RingMoverVisualizer : MonoBehaviour {
     void moveRingsForward(float speed) {
         // Move the segments along the z-axis each frame
         foreach (List<GameObject> ringSegments in movableRingsList) {
-            foreach (GameObject segment in ringSegments) {
-                segment.transform.position -= new Vector3(0, 0, Time.deltaTime * speed);
-            }
+            // Get the ring holder
+            GameObject ringHolder = ringSegments[0].transform.parent.gameObject;
+            ringHolder.transform.position -= new Vector3(0, 0, Time.deltaTime * speed);
         }
 
         foreach (GameObject pulsatingCube in pulsatingCubesList) {
