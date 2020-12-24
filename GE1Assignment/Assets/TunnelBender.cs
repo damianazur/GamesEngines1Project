@@ -5,13 +5,11 @@ using UnityEngine;
 public class TunnelBender : MonoBehaviour
 {
     private GameObject ringSpawnerObj;
+    public GameObject prefab;
     List<List<GameObject>> movableRingsList;
     public GameObject mainCamera;
-
     public bool isEnabled = false;
-
     private bool previousEnabled;
-
     private float amplitudeX = 10.0f;
     private float amplitudeY = 30.0f;
     private float omegaX = 1.0f;
@@ -37,6 +35,23 @@ public class TunnelBender : MonoBehaviour
 
     float ringBendCount = 1.0f;
 
+    void resetSegmentSize() {
+        Vector3 originalScale = prefab.transform.localScale;
+        float lerpSpeed = 100.0f;
+
+        for (int i = 0; i < (int) ringBendCount; i++) {
+            List<GameObject> ringSegments = movableRingsList[i];
+
+            foreach (GameObject segment in ringSegments) {
+                Vector3 ls = segment.transform.localScale;
+                ls.x = Mathf.Lerp(ls.x, originalScale.x, Time.deltaTime * lerpSpeed);
+                ls.y = Mathf.Lerp(ls.y, originalScale.y, Time.deltaTime * lerpSpeed);
+                ls.z = Mathf.Lerp(ls.z, originalScale.z, Time.deltaTime * lerpSpeed);
+                segment.transform.localScale = ls;
+            }
+        }
+    }
+
     void transitionToOscillation() {
         for (int i = 0; i < (int) ringBendCount; i++) {
             float index = (float) i + globIndex;
@@ -61,7 +76,7 @@ public class TunnelBender : MonoBehaviour
         }
     }
 
-    void setCameraPos(float posLerpSpeed) {
+    void setCamera(float posLerpSpeed) {
         Vector3 camPos = mainCamera.transform.position;
         GameObject currentRing =  movableRingsList[2][0].transform.parent.gameObject;
         float ringPosY = currentRing.transform.position.y;
@@ -77,8 +92,9 @@ public class TunnelBender : MonoBehaviour
     {
         if (isEnabled) {
             previousEnabled = isEnabled;
+            resetSegmentSize();
             transitionToOscillation();
-            setCameraPos(3.0f);
+            setCamera(3.0f);
 
         } else if (isEnabled == false) {
             // mainCamera.transform.position = new Vector3(0, 0, 0);
@@ -94,7 +110,7 @@ public class TunnelBender : MonoBehaviour
                 ringHolder.transform.position = lerpedPosition;
 
             }
-            setCameraPos(1.0f);
+            setCamera(3.0f);
             // previousEnabled = isEnabled;
         }
     }

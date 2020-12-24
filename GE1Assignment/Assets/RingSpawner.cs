@@ -9,6 +9,7 @@ public class RingSpawner : MonoBehaviour
     public int noOfSegments = 20;
     public int startingRings = 100;
     public int ringSegmentGapMax = 8;
+    public int ringSegmentGapMin = 0;
     public int finalRingCount;
     public List<List<GameObject>> movableRingsList = new List<List<GameObject>>();
     public List<List<GameObject>> endRings = new List<List<GameObject>>();
@@ -90,7 +91,7 @@ public class RingSpawner : MonoBehaviour
         if (endRings.Count > 0 && endRings.Count < finalRingCount) {
             segmentGap = 1;
         } else {
-            segmentGap = Random.Range(0, ringSegmentGapMax);
+            segmentGap = Random.Range(ringSegmentGapMin, ringSegmentGapMax);
         }
 
         float cubeY = prefab.transform.localScale.y;
