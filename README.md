@@ -14,6 +14,20 @@ Simply import the song that you would like to play into unity and select it in c
 There are configurable variables for each of features in the project. For example, the radius of the ring, number of segments, number of rings, speeds, starting times, intervals and many, many more.
 
 # How it works
+There are several features and these will be discussed below.<br><br>
+1\. **Infinite tunnel**<br>
+A ring spawner object spawns two types of rings. There are dynamic rings which will be moved to give the illusion that the user is moving into the tunnel (the main camera does does not move forward) and there are also static rings which are the the very end of the tunnel and help give the illusion that the tunnel is infinite without the need to spawn thousands of objects. This can be seen in the image below.<br><br>
+The rings are also moved by an audio visualizer at a speed that corresponds to the music to give the feeling of moving with the beat. The ring spawner object keeps track of the position of the most recent ring and spawns in a new one when needed.<br>
+It also syncs the position of the newly spawned ring to the latest one so that there the gap is always consistent. To further make the spawning robust, if the ring moves too far whether due to lag or simply a high speed then multiple rings will spawn and the tunnel will always be consistent.<br>
+The rings are destroyed once they are no longer in view so that memory is freed up and avoids lag.<br>
+The segments of each ring shrink and expand with the frequency bands, creating an interesting visual effect.<br><br>
+
+
+![An image](Rings.png)<br><br>
+2\. **Pulsating Cubes**<br><br>
+Cubes are randomly spawned within the tunnel and these cubes move with the tunnel towards the player. These cubes also pulse with the music's amplitude to give a more interesting visual effect. The colour of the cubes is determined by their position in the tunnel and this helps make the visualizer less chaotic. These cubes are destroyed once out of the camera's FOV.
+
+3\. **Oscillating tunnel**<br><br>
 
 
 # References
