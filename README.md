@@ -6,6 +6,8 @@ Student Number: C17413722
 
 Class Group: DT228/4
 
+[![Video](Thumbnail.png)](https://youtu.be/XN0MpySX9eg)
+
 # Description of the project
 The project is a procedularly generated music visualizer that shows an illusion of an infinite tunnel that the user moves through. The tunnel shrinks and expands with the beat and the speed at which the user moves through the tunnel is also adjusted to the music. To futher add more depth, cubes spawn within the tunnel and pulsate in sync with the music.
 
@@ -46,7 +48,7 @@ However, the thing I cannot take credit for is the AudioAnalyser created by Dr. 
 
 # References
 Inspiration:
-**Procedural Phyllotaxis - Unity/C# Tutorial [Part 5 - 3D Tunnel]**:
+**Procedural Phyllotaxis - Unity/C# Tutorial [Part 5 - 3D Tunnel]**:<br>
 https://www.youtube.com/watch?v=PwHANpTc87E&t=2s&ab_channel=PeerPlay
 This video gave me some ideas for how to generate the tunnel. Although, in this video the camera moves forward and the tunnel is generated in front of it.
 
