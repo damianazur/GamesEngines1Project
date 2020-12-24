@@ -6,28 +6,38 @@ public class TunnelBender : MonoBehaviour
 {
     public GameObject prefab;
     public GameObject mainCamera;
-    public bool isEnabled = false;
     public float creationSpeed = 2.0f;
     public int startSec = 30;
     public int timeBetweenBends = 90;
     public float tunnelDurationSec = 5.0f;
+    public float oscillationSpeed = 10.0f;
+    private bool isEnabled = false;
     private float untilNextOscillation;
     private float lastOscillation;
     private GameObject ringSpawnerObj;
     List<List<GameObject>> movableRingsList;
+    // Amplitude of sine wave
     private float amplitudeY = 30.0f;
+    // Omega variable is used to detemine the frequency of the wave
     private float omegaY = 0.05f;
+    // globIndex is used to track the position of the rings on the sine wave 
+    // so that it updates as the rings move forward
     private float globIndex;
+    // The rings will be gradually bent when the transition starts
+    float ringBendCount = 1.0f;
 
     // Start is called before the first frame update
     void Start()
     {
         untilNextOscillation = startSec;
+
+        // Get the spawner objects as the rings will be worked with
         ringSpawnerObj = GameObject.FindWithTag("RingSpawner");
         RingSpawner ringSpawner = ringSpawnerObj.GetComponent<RingSpawner>();
         movableRingsList = ringSpawner.movableRingsList;
     }
 
+    // Object1 looks at another object
     void LoopAtLerp(GameObject object1, GameObject gameObjectToLookAt, float lerpSpeed)
     {
         Vector3 relativePos = gameObjectToLookAt.transform.position - object1.transform.position;
@@ -35,13 +45,15 @@ public class TunnelBender : MonoBehaviour
         object1.transform.rotation = Quaternion.Lerp(object1.transform.rotation, toRotation, lerpSpeed * Time.deltaTime );
     }
 
-    float ringBendCount = 1.0f;
-
+    // Gaps between ring segments doesn't look good. These gaps are removed while
+    // the tunnel is bending so that it looks smooth. This is achived by restoring the segment
+    // to it's original "prefab" size
     void resetSegmentSize() {
         Vector3 originalScale = prefab.transform.localScale;
         float ySegmentGap = 0.3f;
         float lerpSpeed = 10.0f;
 
+        // Iterate over each segment and lerp the scale
         for (int i = 0; i < (int) ringBendCount; i++) {
             List<GameObject> ringSegments = movableRingsList[i];
 
@@ -55,6 +67,7 @@ public class TunnelBender : MonoBehaviour
         }
     }
 
+    // Tunnel transitions from a "linear" looking tunnel to one that is bending
     void transitionToOscillation() {
         for (int i = 0; i < (int) ringBendCount; i++) {
             float index = (float) i + globIndex;
@@ -62,7 +75,7 @@ public class TunnelBender : MonoBehaviour
             GameObject segmentParent = ringSegments[0].transform.parent.gameObject;
             float localZ = segmentParent.transform.localPosition.z;
             index += Time.deltaTime;
-            globIndex += Time.deltaTime / 10;
+            globIndex += Time.deltaTime / oscillationSpeed;
             float y = amplitudeY * Mathf.Sin (omegaY * index);
 
             Vector3 wantedPosition =  new Vector3(0, -y, localZ);
@@ -75,6 +88,7 @@ public class TunnelBender : MonoBehaviour
         }
     }
 
+    // The camera position needs to be set on the x and y axies as the tunnel oscillates
     void setCamera(float posLerpSpeed) {
         Vector3 camPos = mainCamera.transform.position;
         GameObject currentRing =  movableRingsList[2][0].transform.parent.gameObject;
@@ -90,6 +104,7 @@ public class TunnelBender : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // If it is time to enable the tunnel bending
         if (Time.time > untilNextOscillation) {
             untilNextOscillation += timeBetweenBends + tunnelDurationSec;
             lastOscillation = Time.time;
@@ -105,7 +120,10 @@ public class TunnelBender : MonoBehaviour
                 isEnabled = false;
             }
 
-        } else if (isEnabled == false) {
+        } 
+        // Gradually restore the rings to their original position along the y-axis
+        else if (isEnabled == false) {
+            
             float spawnerY = ringSpawnerObj.transform.position.y;
             for (int i = 0; i < movableRingsList.Count - 1; i++) {
                 List<GameObject> ringSegmentsArray = movableRingsList[i];

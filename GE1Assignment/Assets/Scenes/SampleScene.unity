@@ -691,9 +691,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 7263426115456198976, guid: 2fbba6a7fe7fff14d85f767eb8b53d64, type: 3}
   mainCamera: {fileID: 963194225}
-  isEnabled: 0
-  startIntervalSec: 120
-  tunnelDurationSec: 5
+  creationSpeed: 2
+  startSec: 5
+  timeBetweenBends: 90
+  tunnelDurationSec: 15
+  oscillationSpeed: 10
 --- !u!4 &1261731321
 Transform:
   m_ObjectHideFlags: 0
