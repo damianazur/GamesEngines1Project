@@ -4,21 +4,25 @@ using UnityEngine;
 
 public class TunnelBender : MonoBehaviour
 {
-    private GameObject ringSpawnerObj;
     public GameObject prefab;
-    List<List<GameObject>> movableRingsList;
     public GameObject mainCamera;
     public bool isEnabled = false;
-    private float amplitudeX = 10.0f;
+    public float creationSpeed = 2.0f;
+    public int startSec = 30;
+    public int timeBetweenBends = 90;
+    public float tunnelDurationSec = 5.0f;
+    private float untilNextOscillation;
+    private float lastOscillation;
+    private GameObject ringSpawnerObj;
+    List<List<GameObject>> movableRingsList;
     private float amplitudeY = 30.0f;
-    private float omegaX = 1.0f;
     private float omegaY = 0.05f;
-    private float index;
     private float globIndex;
 
     // Start is called before the first frame update
     void Start()
     {
+        untilNextOscillation = startSec;
         ringSpawnerObj = GameObject.FindWithTag("RingSpawner");
         RingSpawner ringSpawner = ringSpawnerObj.GetComponent<RingSpawner>();
         movableRingsList = ringSpawner.movableRingsList;
@@ -62,12 +66,8 @@ public class TunnelBender : MonoBehaviour
             float y = amplitudeY * Mathf.Sin (omegaY * index);
 
             Vector3 wantedPosition =  new Vector3(0, -y, localZ);
-            Vector3 lerpedPosition = Vector3.Lerp(segmentParent.transform.position, wantedPosition, Time.deltaTime * 1.0f);
+            Vector3 lerpedPosition = Vector3.Lerp(segmentParent.transform.position, wantedPosition, Time.deltaTime * creationSpeed);
             segmentParent.transform.position = lerpedPosition;
-
-            if (i > 0) {
-                // LoopAtLerp(segmentParent, movableRingsList[i-1][0].transform.parent.gameObject, 2);
-            }
         }
 
         if (ringBendCount < movableRingsList.Count - 20) {
@@ -90,10 +90,20 @@ public class TunnelBender : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Time.time > untilNextOscillation) {
+            untilNextOscillation += timeBetweenBends + tunnelDurationSec;
+            lastOscillation = Time.time;
+            isEnabled = true;
+        }
+
         if (isEnabled) {
             resetSegmentSize();
             transitionToOscillation();
             setCamera(3.0f);
+
+            if (Time.time > lastOscillation + tunnelDurationSec) {
+                isEnabled = false;
+            }
 
         } else if (isEnabled == false) {
             float spawnerY = ringSpawnerObj.transform.position.y;

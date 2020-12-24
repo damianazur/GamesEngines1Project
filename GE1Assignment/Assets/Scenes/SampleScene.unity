@@ -514,7 +514,7 @@ GameObject:
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
   - component: {fileID: 963194230}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -689,6 +689,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de155fa677b50e346978746ed79cc716, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prefab: {fileID: 7263426115456198976, guid: 2fbba6a7fe7fff14d85f767eb8b53d64, type: 3}
+  mainCamera: {fileID: 963194225}
+  isEnabled: 0
+  startIntervalSec: 120
+  tunnelDurationSec: 5
 --- !u!4 &1261731321
 Transform:
   m_ObjectHideFlags: 0
@@ -736,6 +741,7 @@ MonoBehaviour:
   noOfSegments: 20
   startingRings: 150
   ringSegmentGapMax: 7
+  ringSegmentGapMin: 0
   finalRingCount: 50
   prefab: {fileID: 7263426115456198976, guid: 2fbba6a7fe7fff14d85f767eb8b53d64, type: 3}
 --- !u!4 &1492626647
@@ -795,7 +801,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1966477117}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -291.90036, y: 126.19376, z: 665.52655}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -831,7 +837,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sharedProfile: {fileID: 11400000, guid: 872c51be9ee359d4190e961dc3c742d3, type: 2}
-  isGlobal: 0
+  isGlobal: 1
   blendDistance: 0
   weight: 1
   priority: 0

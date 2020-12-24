@@ -107,11 +107,16 @@ public class PulsatingCubeVis : MonoBehaviour
     void SyncCubesToRingHeight() {
         for (int i = 0; i < pulsatingCubes.Count; i++) {
             GameObject cube = pulsatingCubes[i];
+
+            // Finds the ring that is close to the cube and sets the position of the cube
+            // relative to the ring
             for (int j = 0; j < movableRingsList.Count; j++) {
                 List<GameObject> ringSegments = movableRingsList[j];
                 GameObject ringHolder = ringSegments[0].transform.parent.gameObject;
                 float ringPosZ = ringHolder.transform.position.z;
 
+                // The ring position will start at the beginning and increment until it is greater than the 
+                // position of the cube
                 if (ringPosZ > cube.transform.position.z) {
                     float ringHeight = ringHolder.transform.position.y;
                     cube.transform.position = new Vector3(cube.transform.position.x, ringHeight + originalCubePos[i].y, cube.transform.position.z);
