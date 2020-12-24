@@ -10,10 +10,11 @@ Class Group: DT228/4
 The project is a procedularly generated music visualizer that shows an illusion of an infinite tunnel that the user moves through. The tunnel shrinks and expands with the beat and the speed at which the user moves through the tunnel is also adjusted to the music. To futher add more depth, cubes spawn within the tunnel and pulsate in sync with the music.
 
 # Instructions for use
-Simply import the song that you would like to play into unity and select it in clip field in the AudioAnalyzer object's AudioAnalyzer Script, then hit play.<br>#
-The tunnel and other parameters are all configrable.
+Simply import the song that you would like to play into unity and select it in clip field in the AudioAnalyzer object's AudioAnalyzer Script, then hit play.<br>
+There are configurable variables for each of features in the project. For example, the radius of the ring, number of segments, number of rings, speeds, starting times, intervals and many, many more.
 
 # How it works
+
 
 # References
 
