@@ -50,10 +50,19 @@ public class TunnelBender : MonoBehaviour
         }
 
         Vector3 camPos = mainCamera.transform.position;
-        GameObject currentRing =  movableRingsList[0][2].transform.parent.gameObject;
+        GameObject currentRing =  movableRingsList[2][0].transform.parent.gameObject;
         float ringPosY = currentRing.transform.position.y;
         Vector3 newCamPos = new Vector3(camPos.x, ringPosY, camPos.z);
-        
         mainCamera.transform.position = Vector3.Lerp(camPos, newCamPos, Time.deltaTime * 15.0f);
+
+
+        GameObject lookAtRing =  movableRingsList[20][0].transform.parent.gameObject;
+        LoopAtLerp(mainCamera, lookAtRing, 2.0f);
+
+        // Quaternion camRot = mainCamera.transform.rotation;
+        // print(mainCamera.transform.position.y);
+        // float newCamRotX = (mainCamera.transform.position.y) / 20.0f;
+        // print(newCamRotX);
+        // mainCamera.transform.rotation = Quaternion.Euler(newCamRotX, 0, 0);
     }
 }
