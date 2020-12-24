@@ -15,6 +15,8 @@ public class PulsatingCubeVis : MonoBehaviour
     
     public List<GameObject> pulsatingCubes = new List<GameObject>();
 
+    private List<Vector3> originalCubePos = new List<Vector3>();
+
     private float endOfTunnelZ;
     private float ringRadius;
 
@@ -73,6 +75,7 @@ public class PulsatingCubeVis : MonoBehaviour
         cube.tag = "PulsatingCube";
         cube.transform.localScale = new Vector3(sideSize, sideSize, sideSize);
         cube.transform.position = new Vector3(x, y, z);
+        originalCubePos.Add(new Vector3(x, y, z));
 
         // Hue is determined by the position of the cube (this makes the visualizer less messy looking)
         float hue = Utilities.Map((x + y), -ringRadius, ringRadius, 0, 1);
@@ -108,19 +111,10 @@ public class PulsatingCubeVis : MonoBehaviour
                 List<GameObject> ringSegments = movableRingsList[j];
                 GameObject ringHolder = ringSegments[0].transform.parent.gameObject;
                 float ringPosZ = ringHolder.transform.position.z;
-                float ringHeight = ringHolder.transform.position.y;
 
                 if (ringPosZ > cube.transform.position.z) {
-                    // float heightDiff = ringHeight - cube.transform.position.y;
-                    // print(heightDiff);
-                    // print(ringRadius);
-                    // print(ringHeight);
-                    // print(ringHeight);
-                    // if (Mathf.Abs(heightDiff) > ringRadius) {
-                        // print(ringPosZ + " " + cube.transform.position.z);
-                        // cube.transform.position += new Vector3(0, heightDiff, 0);
-                        cube.transform.position = new Vector3(cube.transform.position.x, ringHeight, cube.transform.position.z);
-                    // }
+                    float ringHeight = ringHolder.transform.position.y;
+                    cube.transform.position = new Vector3(cube.transform.position.x, ringHeight + originalCubePos[i].y, cube.transform.position.z);
                     break;
                 }
             }
@@ -146,6 +140,7 @@ public class PulsatingCubeVis : MonoBehaviour
                 Destroy(cube);
                 // Remove from the array
                 pulsatingCubes.RemoveAt(i);
+                originalCubePos.RemoveAt(i);
 
                 float size = Random.Range(cubeMinSize, cubeMaxSize);
                 float x = Random.Range(-halfRadius, halfRadius);
