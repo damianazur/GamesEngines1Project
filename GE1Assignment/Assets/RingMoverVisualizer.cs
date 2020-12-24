@@ -16,17 +16,19 @@ public class RingMoverVisualizer : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        // The rings are moved with the music
         GameObject ringSpawner = GameObject.FindWithTag("RingSpawner");
         movableRingsList = ringSpawner.GetComponent<RingSpawner>().movableRingsList;
         endRings = ringSpawner.GetComponent<RingSpawner>().endRings;
-
         
+        // The cubes will be moved with the music
         GameObject pulsatingCubesVis = GameObject.FindWithTag("PulsatingCubesHolder");
         pulsatingCubesList = pulsatingCubesVis.GetComponent<PulsatingCubeVis>().pulsatingCubes;
         
     }
 
-    void moveRingsForward(float speed) {
+    // Rings and puksating cubes will be moved.
+    void moveForward(float speed) {
         // Move the segments along the z-axis each frame
         foreach (List<GameObject> ringSegments in movableRingsList) {
             // Get the ring holder
@@ -39,6 +41,7 @@ public class RingMoverVisualizer : MonoBehaviour {
         }
     }
 
+    // Ring segments will pulse with the beat
     void lerpScaleRingSegments(List<List<GameObject>> segmentList, float scale, float minScale, int axis, float lerpSpeed) {
         foreach (List<GameObject> elements in segmentList) {
             for (int i = 0; i < elements.Count; i++) {
@@ -52,7 +55,8 @@ public class RingMoverVisualizer : MonoBehaviour {
             }
         }
     }
-
+    
+    // Entire tunnel will rotate
     void rotateTunnel() {
         float amplitude = AudioAnalyzer.amplitude;
         GameObject ringSegmentsHolder = GameObject.FindWithTag("TunnelHolder");
@@ -65,12 +69,11 @@ public class RingMoverVisualizer : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-
         float amplitude = AudioAnalyzer.amplitude;
         lerpScaleRingSegments(movableRingsList, segmentXScale, 1.0f, 0, segmentLerpSpeed);
         lerpScaleRingSegments(movableRingsList, segmentZScale, 1.0f, 2, segmentLerpSpeed);
         rotateTunnel();
         float speed = defaultMoveSpeed + amplitude * scaleMoveSpeed;
-        moveRingsForward(speed);
+        moveForward(speed);
 	}
 }

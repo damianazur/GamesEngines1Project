@@ -692,7 +692,7 @@ MonoBehaviour:
   prefab: {fileID: 7263426115456198976, guid: 2fbba6a7fe7fff14d85f767eb8b53d64, type: 3}
   mainCamera: {fileID: 963194225}
   creationSpeed: 2
-  startSec: 5
+  startSec: 30
   timeBetweenBends: 90
   tunnelDurationSec: 15
   oscillationSpeed: 10

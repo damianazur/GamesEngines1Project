@@ -104,6 +104,8 @@ public class PulsatingCubeVis : MonoBehaviour
         }
     }
 
+    // This method adjusts the position of the cubes vertically relative to the ring closest to it
+    // This method is needed for when the tunnel bends/oscillates up and down
     void SyncCubesToRingHeight() {
         for (int i = 0; i < pulsatingCubes.Count; i++) {
             GameObject cube = pulsatingCubes[i];
@@ -129,7 +131,9 @@ public class PulsatingCubeVis : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Cubes are pulsing with the beat
         pulseCubes();
+        // Cubes' height is adjusted to the tunnel
         SyncCubesToRingHeight();
 
         float halfRadius = ringRadius/2;
@@ -147,6 +151,7 @@ public class PulsatingCubeVis : MonoBehaviour
                 pulsatingCubes.RemoveAt(i);
                 originalCubePos.RemoveAt(i);
 
+                // Generate new cube
                 float size = Random.Range(cubeMinSize, cubeMaxSize);
                 float x = Random.Range(-halfRadius, halfRadius);
                 float y = Random.Range(-halfRadius, halfRadius);

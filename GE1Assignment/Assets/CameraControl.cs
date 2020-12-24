@@ -37,11 +37,7 @@ public class CameraControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float mouseX, mouseY;
         float speed = this.speed;
-
-
-        float runAxis = 0; // Input.GetAxis("Run Axis");
 
         if (Input.GetKey(KeyCode.Escape))
         {
@@ -52,9 +48,6 @@ public class CameraControl : MonoBehaviour
         {
             Walk(Time.deltaTime * speed);
         }
-
-        mouseX = Input.GetAxis("Mouse X");
-        mouseY = Input.GetAxis("Mouse Y");
             
 
         float contWalk = Input.GetAxis("Vertical");
