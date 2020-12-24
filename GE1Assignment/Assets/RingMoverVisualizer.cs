@@ -69,7 +69,7 @@ public class RingMoverVisualizer : MonoBehaviour {
         float amplitude = AudioAnalyzer.amplitude;
         lerpScaleRingSegments(movableRingsList, segmentXScale, 1.0f, 0, segmentLerpSpeed);
         lerpScaleRingSegments(movableRingsList, segmentZScale, 1.0f, 2, segmentLerpSpeed);
-        // rotateTunnel();
+        rotateTunnel();
         float speed = defaultMoveSpeed + amplitude * scaleMoveSpeed;
         moveRingsForward(speed);
 	}

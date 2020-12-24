@@ -80,8 +80,9 @@ public class TunnelBender : MonoBehaviour
     void setCamera(float posLerpSpeed) {
         Vector3 camPos = mainCamera.transform.position;
         GameObject currentRing =  movableRingsList[2][0].transform.parent.gameObject;
+        float ringPosX = currentRing.transform.position.x;
         float ringPosY = currentRing.transform.position.y;
-        Vector3 newCamPos = new Vector3(camPos.x, ringPosY, camPos.z);
+        Vector3 newCamPos = new Vector3(ringPosX, ringPosY, camPos.z);
         mainCamera.transform.position = Vector3.Lerp(camPos, newCamPos, Time.deltaTime * posLerpSpeed);
 
         GameObject lookAtRing =  movableRingsList[20][0].transform.parent.gameObject;
