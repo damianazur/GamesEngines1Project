@@ -6,6 +6,7 @@ Student Number: C17413722
 
 Class Group: DT228/4
 
+Video Link: https://youtu.be/XN0MpySX9eg
 [![Video](Thumbnail.png)](https://youtu.be/XN0MpySX9eg)
 
 # Description of the project
@@ -49,7 +50,7 @@ However, the thing I cannot take credit for is the AudioAnalyser created by Dr. 
 # References
 Inspiration:
 **Procedural Phyllotaxis - Unity/C# Tutorial [Part 5 - 3D Tunnel]**:<br>
-https://www.youtube.com/watch?v=PwHANpTc87E&t=2s&ab_channel=PeerPlay
+https://www.youtube.com/watch?v=PwHANpTc87E&t=2s&ab_channel=PeerPlay<br>
 This video gave me some ideas for how to generate the tunnel. Although, in this video the camera moves forward and the tunnel is generated in front of it.
 
 # What I am most proud of in the assignment
