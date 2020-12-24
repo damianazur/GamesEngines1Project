@@ -21,18 +21,22 @@ The rings are also moved by an audio visualizer at a speed that corresponds to t
 It also syncs the position of the newly spawned ring to the latest one so that there the gap is always consistent. To further make the spawning robust, if the ring moves too far whether due to lag or simply a high speed then multiple rings will spawn and the tunnel will always be consistent.<br>
 The rings are destroyed once they are no longer in view so that memory is freed up and avoids lag.<br>
 The segments of each ring shrink and expand with the frequency bands, creating an interesting visual effect.<br><br>
-
-
 ![An image](Rings.png)<br><br>
-2\. **Pulsating Cubes**<br><br>
-Cubes are randomly spawned within the tunnel and these cubes move with the tunnel towards the player. These cubes also pulse with the music's amplitude to give a more interesting visual effect. The colour of the cubes is determined by their position in the tunnel and this helps make the visualizer less chaotic. These cubes are destroyed once out of the camera's FOV.
 
-3\. **Oscillating tunnel**<br><br>
+2\. **Pulsating Cubes**<br>
+Cubes are randomly spawned within the tunnel and these cubes move with the tunnel towards the player. These cubes also pulse with the music's amplitude to give a more interesting visual effect. The colour of the cubes is determined by their position in the tunnel and this helps make the visualizer less chaotic. These cubes are destroyed once out of the camera's FOV. The size of the cubes and their scale with the music's amplitude etc. can be configured.
 
+3\. **Oscillating tunnel**<br>
+At a defined time and interval the tunnel forms into a shape of a sine wave and give creates the illusion of moving up and down a bending tunnel. The sideways view can be seen in the image below. The tunnel gradually bends to form the wave and is gradually restored back to normal after a specified amount of time. The camera x-axis and y-axis is adjusted as the tunnel oscillates. The pulsating cubes mentioned before are also automatically synced to the height of the tunnel and the size of the segments in the ring are temporairly changed to smoothen out the tunnel. The timing, duration, osciallation speed etc. can be configured.<br>
+![An image](Oscillation.png)<br><br>
+
+# Which parts I developed
+I pretty much created the entire thing from scratch which includes the tunnel generation, oscillation of tunnel, spawning and movement of pulsating cubes etc. without the help of online tutorials. However, the thing I cannot take credit for is the AudioAnalyser created by Dr. Bryan Duggan. The use of the AudioAnalyser has also been inspired by the labs and it was heavily modified to suit the needs of the project. I also gained inspiration for spawning in the tunnel and moving the objects towards the player instead of moving the player from online tutorials. However, I did not need/use any of their code as this project has different needs.
 
 # References
 
 # What I am most proud of in the assignment
+I'm most proud of the tunnel generation.
 
 # Proposal:
 Assignment 1 of Games Engines 1<br>
