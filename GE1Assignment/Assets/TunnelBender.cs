@@ -48,5 +48,12 @@ public class TunnelBender : MonoBehaviour
                 LoopAtLerp(segmentParent, movableRingsList[i-1][0].transform.parent.gameObject, 2);
             }
         }
+
+        Vector3 camPos = mainCamera.transform.position;
+        GameObject currentRing =  movableRingsList[0][2].transform.parent.gameObject;
+        float ringPosY = currentRing.transform.position.y;
+        Vector3 newCamPos = new Vector3(camPos.x, ringPosY, camPos.z);
+        
+        mainCamera.transform.position = Vector3.Lerp(camPos, newCamPos, Time.deltaTime * 15.0f);
     }
 }
