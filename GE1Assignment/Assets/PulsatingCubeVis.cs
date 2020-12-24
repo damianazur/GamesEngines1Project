@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PulsatingCubeVis : MonoBehaviour
 {
+    private List<List<GameObject>> movableRingsList;
     public int cubeCount = 30;
     public float cubeMinSize = 0.3f;
     public float cubeMaxSize = 1.0f;
@@ -21,7 +22,9 @@ public class PulsatingCubeVis : MonoBehaviour
     void Start()
     {
         GameObject ringSpawner = GameObject.FindWithTag("RingSpawner");
-        ringRadius = ringSpawner.GetComponent<RingSpawner>().radius;
+        RingSpawner ringSpawnerScript = ringSpawner.GetComponent<RingSpawner>();
+        ringRadius = ringSpawnerScript.radius;
+        movableRingsList = ringSpawnerScript.movableRingsList;
         List<List<GameObject>> endRings = ringSpawner.GetComponent<RingSpawner>().endRings;
         endOfTunnelZ = endRings[endRings.Count - 1][0].transform.position.z;
 
@@ -87,21 +90,48 @@ public class PulsatingCubeVis : MonoBehaviour
         float amplitude = AudioAnalyzer.amplitude;
         float scale = cubeMaxSize;
         for (int i = 0; i < pulsatingCubes.Count; i++) {
-            Vector3 ls = pulsatingCubes[i].transform.localScale;
+            GameObject cube = pulsatingCubes[i];
+            Vector3 ls = cube.transform.localScale;
             ls.x = Mathf.Lerp(ls.x, cubeMinSize + (amplitude * scale), Time.deltaTime * scaleSpeed);
             ls.y = Mathf.Lerp(ls.y, cubeMinSize + (amplitude * scale), Time.deltaTime * scaleSpeed);
             ls.z = Mathf.Lerp(ls.z, cubeMinSize + (amplitude * scale), Time.deltaTime * scaleSpeed);
 
-            Vector3 newPos = pulsatingCubes[i].transform.localPosition;
-            pulsatingCubes[i].transform.localScale = ls;
+            Vector3 newPos = cube.transform.localPosition;
+            cube.transform.localScale = ls;
+        }
+    }
+
+    void SyncCubesToRingHeight() {
+        for (int i = 0; i < pulsatingCubes.Count; i++) {
+            GameObject cube = pulsatingCubes[i];
+            for (int j = 0; j < movableRingsList.Count; j++) {
+                List<GameObject> ringSegments = movableRingsList[j];
+                GameObject ringHolder = ringSegments[0].transform.parent.gameObject;
+                float ringPosZ = ringHolder.transform.position.z;
+                float ringHeight = ringHolder.transform.position.y;
+
+                if (ringPosZ > cube.transform.position.z) {
+                    // float heightDiff = ringHeight - cube.transform.position.y;
+                    // print(heightDiff);
+                    // print(ringRadius);
+                    // print(ringHeight);
+                    // print(ringHeight);
+                    // if (Mathf.Abs(heightDiff) > ringRadius) {
+                        // print(ringPosZ + " " + cube.transform.position.z);
+                        // cube.transform.position += new Vector3(0, heightDiff, 0);
+                        cube.transform.position = new Vector3(cube.transform.position.x, ringHeight, cube.transform.position.z);
+                    // }
+                    break;
+                }
+            }
         }
     }
     
-
     // Update is called once per frame
     void Update()
     {
         pulseCubes();
+        SyncCubesToRingHeight();
 
         float halfRadius = ringRadius/2;
         int currentCubeCount = pulsatingCubes.Count;
