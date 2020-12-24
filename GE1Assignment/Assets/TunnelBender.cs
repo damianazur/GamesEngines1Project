@@ -21,6 +21,13 @@ public class TunnelBender : MonoBehaviour
         movableRingsList = ringSpawner.GetComponent<RingSpawner>().movableRingsList;
     }
 
+    void LoopAtLerp(GameObject object1, GameObject gameObjectToLookAt, float lerpSpeed)
+    {
+        Vector3 relativePos = gameObjectToLookAt.transform.position - object1.transform.position;
+        Quaternion toRotation = Quaternion.LookRotation(relativePos);
+        object1.transform.rotation = Quaternion.Lerp(object1.transform.rotation, toRotation, lerpSpeed * Time.deltaTime );
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -36,6 +43,10 @@ public class TunnelBender : MonoBehaviour
             Vector3 wantedPosition =  new Vector3(0, -y, localZ);
             Vector3 lerpedPosition = Vector3.Lerp(segmentParent.transform.position, wantedPosition, Time.deltaTime * 1.0f);
             segmentParent.transform.position = lerpedPosition;
+
+            if (i > 0) {
+                LoopAtLerp(segmentParent, movableRingsList[i-1][0].transform.parent.gameObject, 2);
+            }
         }
     }
 }
