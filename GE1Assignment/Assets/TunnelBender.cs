@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TunnelBender : MonoBehaviour
 {
+    private GameObject ringSpawnerObj;
     List<List<GameObject>> movableRingsList;
     public GameObject mainCamera;
 
@@ -22,8 +23,9 @@ public class TunnelBender : MonoBehaviour
     void Start()
     {
         previousEnabled = isEnabled;
-        GameObject ringSpawner = GameObject.FindWithTag("RingSpawner");
-        movableRingsList = ringSpawner.GetComponent<RingSpawner>().movableRingsList;
+        ringSpawnerObj = GameObject.FindWithTag("RingSpawner");
+        RingSpawner ringSpawner = ringSpawnerObj.GetComponent<RingSpawner>();
+        movableRingsList = ringSpawner.movableRingsList;
     }
 
     void LoopAtLerp(GameObject object1, GameObject gameObjectToLookAt, float lerpSpeed)
@@ -55,14 +57,16 @@ public class TunnelBender : MonoBehaviour
         }
 
         if (ringBendCount < movableRingsList.Count - 20) {
-            ringBendCount += Time.deltaTime * 50.0f;
+            ringBendCount += Time.deltaTime * 20.0f;
         }
+    }
 
+    void setCameraPos(float posLerpSpeed) {
         Vector3 camPos = mainCamera.transform.position;
         GameObject currentRing =  movableRingsList[2][0].transform.parent.gameObject;
         float ringPosY = currentRing.transform.position.y;
         Vector3 newCamPos = new Vector3(camPos.x, ringPosY, camPos.z);
-        mainCamera.transform.position = Vector3.Lerp(camPos, newCamPos, Time.deltaTime * 3.0f);
+        mainCamera.transform.position = Vector3.Lerp(camPos, newCamPos, Time.deltaTime * posLerpSpeed);
 
         GameObject lookAtRing =  movableRingsList[20][0].transform.parent.gameObject;
         LoopAtLerp(mainCamera, lookAtRing, 2.0f);
@@ -72,10 +76,26 @@ public class TunnelBender : MonoBehaviour
     void Update()
     {
         if (isEnabled) {
+            previousEnabled = isEnabled;
             transitionToOscillation();
+            setCameraPos(3.0f);
 
-        } else if (isEnabled == false && previousEnabled == true) {
-            
+        } else if (isEnabled == false) {
+            // mainCamera.transform.position = new Vector3(0, 0, 0);
+            // mainCamera.transform.rotation = new Quaternion(0, 0, 0, 0);
+            float spawnerY = ringSpawnerObj.transform.position.y;
+            for (int i = 0; i < movableRingsList.Count - 1; i++) {
+                List<GameObject> ringSegmentsArray = movableRingsList[i];
+                GameObject ringHolder = ringSegmentsArray[0].transform.parent.gameObject;
+                Vector3 currentRingPos = ringHolder.transform.position;
+
+                Vector3 wantedPosition =  new Vector3(currentRingPos.x, spawnerY, currentRingPos.z);
+                Vector3 lerpedPosition = Vector3.Lerp(currentRingPos, wantedPosition, Time.deltaTime * 0.3f);
+                ringHolder.transform.position = lerpedPosition;
+
+            }
+            setCameraPos(1.0f);
+            // previousEnabled = isEnabled;
         }
     }
 }
