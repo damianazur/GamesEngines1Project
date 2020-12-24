@@ -42,10 +42,12 @@ public class RingMoverVisualizer : MonoBehaviour {
     }
 
     // Ring segments will pulse with the beat
-    void lerpScaleRingSegments(List<List<GameObject>> segmentList, float scale, float minScale, int axis, float lerpSpeed) {
-        foreach (List<GameObject> elements in segmentList) {
+    void lerpScaleRingSegments(List<List<GameObject>> ringList, float scale, float minScale, int axis, float lerpSpeed) {
+        foreach (List<GameObject> elements in ringList) {
+
             for (int i = 0; i < elements.Count; i++) {
-                int pos = (int) (i / elements.Count) * AudioAnalyzer.bands.Length;
+                // int pos = (int) ((i / elements.Count) * AudioAnalyzer.bands.Length);
+                int pos = 1;
 
                 Vector3 ls = elements[i].transform.localScale;
                 ls[axis]= Mathf.Lerp(ls[axis], minScale + (AudioAnalyzer.bands[pos] * scale), Time.deltaTime * lerpSpeed);
@@ -58,10 +60,12 @@ public class RingMoverVisualizer : MonoBehaviour {
     
     // Entire tunnel will rotate
     void rotateTunnel() {
+        // Amplitude is not currently used in rotation but can be used in the future
         float amplitude = AudioAnalyzer.amplitude;
-        GameObject ringSegmentsHolder = GameObject.FindWithTag("TunnelHolder");
         float thetaInc = Mathf.PI * 2.0f;
         float theta = thetaInc * amplitude;
+
+        GameObject ringSegmentsHolder = GameObject.FindWithTag("TunnelHolder");
         Quaternion toRotation = ringSegmentsHolder.transform.rotation;
         toRotation *= Quaternion.Euler(0, 0, 0.1f);
         ringSegmentsHolder.transform.rotation = Quaternion.Lerp(ringSegmentsHolder.transform.rotation, toRotation, Time.deltaTime * ringRotateSpeed);
