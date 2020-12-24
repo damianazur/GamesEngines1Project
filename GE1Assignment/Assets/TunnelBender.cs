@@ -37,7 +37,8 @@ public class TunnelBender : MonoBehaviour
 
     void resetSegmentSize() {
         Vector3 originalScale = prefab.transform.localScale;
-        float lerpSpeed = 100.0f;
+        float ySegmentGap = 0.3f;
+        float lerpSpeed = 10.0f;
 
         for (int i = 0; i < (int) ringBendCount; i++) {
             List<GameObject> ringSegments = movableRingsList[i];
@@ -45,7 +46,7 @@ public class TunnelBender : MonoBehaviour
             foreach (GameObject segment in ringSegments) {
                 Vector3 ls = segment.transform.localScale;
                 ls.x = Mathf.Lerp(ls.x, originalScale.x, Time.deltaTime * lerpSpeed);
-                ls.y = Mathf.Lerp(ls.y, originalScale.y, Time.deltaTime * lerpSpeed);
+                ls.y = Mathf.Lerp(ls.y, originalScale.y - ySegmentGap, Time.deltaTime * lerpSpeed);
                 ls.z = Mathf.Lerp(ls.z, originalScale.z, Time.deltaTime * lerpSpeed);
                 segment.transform.localScale = ls;
             }
