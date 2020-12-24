@@ -70,7 +70,7 @@ public class RingMoverVisualizer : MonoBehaviour {
         lerpScaleRingSegments(movableRingsList, segmentXScale, 1.0f, 0, segmentLerpSpeed);
         lerpScaleRingSegments(movableRingsList, segmentZScale, 1.0f, 2, segmentLerpSpeed);
         // rotateTunnel();
-        float speed = 10.0f; //defaultMoveSpeed + amplitude * scaleMoveSpeed;
+        float speed = 20.0f; //defaultMoveSpeed + amplitude * scaleMoveSpeed;
         moveRingsForward(speed);
 	}
 }

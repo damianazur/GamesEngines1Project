@@ -28,10 +28,12 @@ public class TunnelBender : MonoBehaviour
         object1.transform.rotation = Quaternion.Lerp(object1.transform.rotation, toRotation, lerpSpeed * Time.deltaTime );
     }
 
+    float ringBendCount = 1.0f;
+
     // Update is called once per frame
     void Update()
     {
-        for (int i = 0; i < movableRingsList.Count - 10; i++) {
+        for (int i = 0; i < (int) ringBendCount; i++) {
             float index = (float) i + globIndex;
             List<GameObject> ringSegments = movableRingsList[i];
             GameObject segmentParent = ringSegments[0].transform.parent.gameObject;
@@ -45,24 +47,21 @@ public class TunnelBender : MonoBehaviour
             segmentParent.transform.position = lerpedPosition;
 
             if (i > 0) {
-                LoopAtLerp(segmentParent, movableRingsList[i-1][0].transform.parent.gameObject, 2);
+                // LoopAtLerp(segmentParent, movableRingsList[i-1][0].transform.parent.gameObject, 2);
             }
+        }
+
+        if (ringBendCount < movableRingsList.Count - 20) {
+            ringBendCount += Time.deltaTime * 50.0f;
         }
 
         Vector3 camPos = mainCamera.transform.position;
         GameObject currentRing =  movableRingsList[2][0].transform.parent.gameObject;
         float ringPosY = currentRing.transform.position.y;
         Vector3 newCamPos = new Vector3(camPos.x, ringPosY, camPos.z);
-        mainCamera.transform.position = Vector3.Lerp(camPos, newCamPos, Time.deltaTime * 15.0f);
-
+        mainCamera.transform.position = Vector3.Lerp(camPos, newCamPos, Time.deltaTime * 3.0f);
 
         GameObject lookAtRing =  movableRingsList[20][0].transform.parent.gameObject;
         LoopAtLerp(mainCamera, lookAtRing, 2.0f);
-
-        // Quaternion camRot = mainCamera.transform.rotation;
-        // print(mainCamera.transform.position.y);
-        // float newCamRotX = (mainCamera.transform.position.y) / 20.0f;
-        // print(newCamRotX);
-        // mainCamera.transform.rotation = Quaternion.Euler(newCamRotX, 0, 0);
     }
 }
