@@ -1,4 +1,4 @@
-# Infinite Tunnel Music Visualizer
+# Infinite Tunnel - Music Visualizer
 
 Name: Damian Wojtowicz
 
@@ -24,16 +24,31 @@ The segments of each ring shrink and expand with the frequency bands, creating a
 ![An image](Rings.png)<br><br>
 
 2\. **Pulsating Cubes**<br>
-Cubes are randomly spawned within the tunnel and these cubes move with the tunnel towards the player. These cubes also pulse with the music's amplitude to give a more interesting visual effect. The colour of the cubes is determined by their position in the tunnel and this helps make the visualizer less chaotic. These cubes are destroyed once out of the camera's FOV. The size of the cubes and their scale with the music's amplitude etc. can be configured.
+Cubes are randomly spawned within the tunnel and these cubes move with the tunnel towards the player. These cubes also pulse with the music's amplitude to give a more interesting visual effect. The colour of the cubes is determined by their position in the tunnel and this helps make the visualizer less chaotic. These cubes are destroyed once out of the camera's FOV. The size of the cubes and their scale with the music's amplitude etc. can be configured.<br><br>
 
 3\. **Oscillating tunnel**<br>
-At a defined time and interval the tunnel forms into a shape of a sine wave and give creates the illusion of moving up and down a bending tunnel. The sideways view can be seen in the image below. The tunnel gradually bends to form the wave and is gradually restored back to normal after a specified amount of time. The camera x-axis and y-axis is adjusted as the tunnel oscillates. The pulsating cubes mentioned before are also automatically synced to the height of the tunnel and the size of the segments in the ring are temporairly changed to smoothen out the tunnel. The timing, duration, osciallation speed etc. can be configured.<br>
+At a defined time and interval the tunnel forms into a shape of a sine wave and give creates the illusion of moving up and down a bending tunnel. The sideways view can be seen in the image below. The tunnel gradually bends to form the wave and is gradually restored back to normal after a specified amount of time. The camera x-axis and y-axis is adjusted as the tunnel oscillates. The pulsating cubes mentioned before are also automatically synced to the height of the tunnel and the size of the segments in the ring are temporairly changed to smoothen out the tunnel. The timing, duration, osciallation speed etc. can be configured.<br><br>
 ![An image](Oscillation.png)<br><br>
 
+4\. **Audio Responsiveness in detail**<br>
+As previously mentioned there are two types of audio data that is used to generate the movement in this project.<br>
+**Amplitude:**<br>
+The first is the amplitude, and it used in calculating the speed at which the rings are pushed forward towards the camera. It is also used in making the pulsating cubes within the tunnel expand and contract.<br>
+**Frequency Bands:**<br>
+A frequency band is used to change the size of the segments in a ring. I went with the second band which is 60-250 hertz and used to capture the bass. I think it looks good when the tunnel moves at this frequency.<br>
+
+5\. **Post Processing**<br>
+I added vignette and bloom post processing effects to make the visualizer look a little more interesting.
+
 # Which parts I developed
-I pretty much created the entire thing from scratch which includes the tunnel generation, oscillation of tunnel, spawning and movement of pulsating cubes etc. without the help of online tutorials. However, the thing I cannot take credit for is the AudioAnalyser created by Dr. Bryan Duggan. The use of the AudioAnalyser has also been inspired by the labs and it was heavily modified to suit the needs of the project. I also gained inspiration for spawning in the tunnel and moving the objects towards the player instead of moving the player from online tutorials. However, I did not need/use any of their code as this project has different needs.
+This project was very challenging as I pretty much coded the project from scratch which includes the tunnel generation, oscillation of tunnel, spawning and movement of pulsating cubes etc. without the help of online tutorials. This is mainly because I couldn't find any tutorials that showed how to create an infinite tunnel like mine.<br>
+However, the thing I cannot take credit for is the AudioAnalyser created by Dr. Bryan Duggan. The use of the AudioAnalyser has also been inspired by the labs and it was heavily modified to suit the needs of the project. I got inspiration for the procedure of spawning the tunnel and moving the objects towards the camera instead of moving the camera forward from my friend who was familiar with Unity. I was also inspired by the labs to create the rings and colour the segments by their position using the HSV colour space.
 
 # References
+Inspiration:
+**Procedural Phyllotaxis - Unity/C# Tutorial [Part 5 - 3D Tunnel]**:
+https://www.youtube.com/watch?v=PwHANpTc87E&t=2s&ab_channel=PeerPlay
+This video gave me some ideas for how to generate the tunnel. Although, in this video the camera moves forward and the tunnel is generated in front of it.
 
 # What I am most proud of in the assignment
 I'm most proud of the tunnel generation.
