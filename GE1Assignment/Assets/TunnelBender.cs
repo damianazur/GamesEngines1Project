@@ -7,6 +7,10 @@ public class TunnelBender : MonoBehaviour
     List<List<GameObject>> movableRingsList;
     public GameObject mainCamera;
 
+    public bool isEnabled = false;
+
+    private bool previousEnabled;
+
     private float amplitudeX = 10.0f;
     private float amplitudeY = 30.0f;
     private float omegaX = 1.0f;
@@ -17,6 +21,7 @@ public class TunnelBender : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        previousEnabled = isEnabled;
         GameObject ringSpawner = GameObject.FindWithTag("RingSpawner");
         movableRingsList = ringSpawner.GetComponent<RingSpawner>().movableRingsList;
     }
@@ -30,9 +35,7 @@ public class TunnelBender : MonoBehaviour
 
     float ringBendCount = 1.0f;
 
-    // Update is called once per frame
-    void Update()
-    {
+    void transitionToOscillation() {
         for (int i = 0; i < (int) ringBendCount; i++) {
             float index = (float) i + globIndex;
             List<GameObject> ringSegments = movableRingsList[i];
@@ -63,5 +66,16 @@ public class TunnelBender : MonoBehaviour
 
         GameObject lookAtRing =  movableRingsList[20][0].transform.parent.gameObject;
         LoopAtLerp(mainCamera, lookAtRing, 2.0f);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (isEnabled) {
+            transitionToOscillation();
+
+        } else if (isEnabled == false && previousEnabled == true) {
+            
+        }
     }
 }
