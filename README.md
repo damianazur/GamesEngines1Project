@@ -57,7 +57,7 @@ This video gave me some ideas for how to generate the tunnel. Although, in this 
 https://answers.unity.com/questions/434717/how-to-make-a-sine-wave-with-a-transform.html
 
 # What I am most proud of in the assignment
-I'm most proud of the tunnel generation.
+I'm most proud of the tunnel generation as it was very challenging and took me a few days of experimentation. Although it could use some improvements when it comes to custom parameters (It will not look perfect with just any parameters), it is robust with the current settings and works well. I also like the aesthetic and I'm generally really happy with it.
 
 # Proposal:
 Assignment 1 of Games Engines 1<br>
