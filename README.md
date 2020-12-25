@@ -45,7 +45,7 @@ I added vignette and bloom post processing effects to make the visualizer look a
 
 # Which parts I developed
 This project was very challenging as I pretty much coded the project from scratch which includes the tunnel generation, oscillation of tunnel, spawning and movement of pulsating cubes etc. without the help of online tutorials. This is mainly because I couldn't find any tutorials that showed how to create an infinite tunnel like mine.<br>
-However, I cannot take credit for is the AudioAnalyser created by Dr. Bryan Duggan. The use of the AudioAnalyser has also been inspired by the labs and the way it is application was heavily modified to suit the needs of the project. The AudioAnalyser script had sections taken out but no additional changes were made. I got inspiration for the procedure of spawning the tunnel and moving the objects towards the camera instead of moving the camera forward from my friend who was familiar with Unity. I was also inspired by the labs to create the rings and colour the segments by their position using the HSV colour space.
+However, I cannot take credit for is the AudioAnalyser created by Dr. Bryan Duggan. The use of the AudioAnalyser has also been inspired by the labs and the way it is applied was heavily modified to suit the needs of the project. The AudioAnalyser script had sections taken out but no additional changes were made. I got inspiration for the procedure of spawning the tunnel and moving the objects towards the camera instead of moving the camera forward from my friend who was familiar with Unity. I was also inspired by the labs to create the rings and colour the segments by their position using the HSV colour space.
 
 # References
 Inspiration:
